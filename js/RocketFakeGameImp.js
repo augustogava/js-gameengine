@@ -1,6 +1,6 @@
-class Player extends Body {
+class Player extends RigidBody {
     constructor(rocketFake, position) {
-        super(Player, null, position, null, null, null);
+        super(Player, 'dynamic', null, position, null, null, null);
 
         ctx.strokeStyle = this.color;
         ctx.fillStyle = this.color;
@@ -25,14 +25,7 @@ class Player extends Body {
         this.topSpeed = 25;
 
         this.gamePhysics = new Physics(this);
-        this.imgLoad = false;
-        this.img = new Image();
-        this.img.src = '../images/rocket/car.jpg';
-        var that = this;
-        this.img.onload = () => {
-            that.this.imgLoad = true;
-            this.draw();
-        }
+
 
         this.camerabox = {
             position: new Vector(this.position.getX(), this.position.getY()),
@@ -257,70 +250,6 @@ const keys = {
     }
 }
 
-class GameEngine {
-    constructor(g) {
-        this.map = null;
-        this.camera = null;
-
-        this.worlds = new HashTable();
-        this.game = g;
-
-    }
-
-    createWorld(n) {
-        this.worlds.set(n, new World(n))
-    }
-
-    addWorldObj(name, obj) {
-        if( !this.worlds.get(name) ){
-            return ;
-        }
-
-        const w = this.worlds.get(name);
-        w.addObject(obj);
-
-        this.worlds.set(name, w)
-    }
-
-    getWorldObjs(name) {
-        if( !this.worlds ){
-            return [];
-        }
-
-        if( !this.worlds.get(name) ){
-            return [];
-        }
-
-        return this.worlds.get(name).getObjects();
-    }
-
-    createMap() {
-        this.map = new Map(this);
-    }
-
-    createCamera() {
-        this.camera = new Camera(this, 0, 0);
-    }
-
-    update() {
-        this.map.update();
-        this.camera.update();
-
-        for (let c of this.getWorldObjs('main')) {
-            c.update();
-        }
-    }
-
-    draw() {
-        this.map.draw();
-        this.camera.draw();
-
-        for (let c of this.getWorldObjs('main')) {
-            c.draw();
-        }
-    }
-}
-
 class RocketFakeGameImp extends GameEngine {
     constructor() {
         super(RocketFakeGameImp);
@@ -366,12 +295,12 @@ class RocketFakeGameImp extends GameEngine {
     }
 
     update() {
-
+        super.update();
 
     }
 
     draw() {
-
+        super.draw();
     }
 
     resize() {

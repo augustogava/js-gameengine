@@ -1,7 +1,15 @@
-class Body {
-    constructor(instance, mass, position, degrees, speed, direction) {
+const bodyType = new HashTable();
+bodyType.set('static', 'static');
+bodyType.set('dynamic', 'dynamic');
+bodyType.set('kinematic', 'kinematic');
+
+class RigidBody {
+    constructor(instance, bodyTypeP,  mass, position, degrees, speed, direction) {
         this.id = Utils.randomIntFromInterval(1, 5000);
-        
+
+        this.bodyType = bodyType.get(bodyTypeP);
+        this.fixedRotation = false;
+
         this.color = "rgba(250,128,114, 1)";
         this.colorProjection = Utils.changeRedSoftness(this.color, 200);
         this.colorShadow = Utils.changeRedSoftness(this.color, 0);

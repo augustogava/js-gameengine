@@ -19,10 +19,14 @@ const background = new Sprite(
   }
 );
 
-class Map {
+class MapGame {
   constructor(rocket) {
     this.rocket = rocket;
     this.load = false;
+  }
+
+  update() {
+
   }
 
   draw() {

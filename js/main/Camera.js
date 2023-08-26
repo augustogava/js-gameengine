@@ -9,6 +9,10 @@ class Camera {
     this.active = false;
   }
 
+  update() {
+
+  }
+
   updateCameraPlayer(player) {
     if (player.camerabox) {
       let speed = player.getSpeed();
