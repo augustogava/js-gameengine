@@ -1,0 +1,23 @@
+{
+    "configurations": [
+
+        {
+            "type": "chrome",
+            "name": "Perlin ",
+            "request": "launch",
+            "url": "http://127.0.0.1:3000/perlin_noise.html"
+        },
+        {
+            "type": "chrome",
+            "name": "Physics",
+            "request": "launch",
+            "url": "http://127.0.0.1:3000/soft.html"
+        },
+        {
+            "type": "chrome",
+            "name": "Rocket",
+            "request": "launch",
+            "url": "http://127.0.0.1:3000/rocket.html"
+        }
+    ]
+}
