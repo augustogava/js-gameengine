@@ -36,12 +36,6 @@ class Globals {
   }
 
   static setDebug(v) {
-    if (!v)
-      return;
-
-    this.debugState = v;
+      this.debugState = v;
   }
-
-
-
 }

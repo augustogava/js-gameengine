@@ -3,6 +3,25 @@ class Utils {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
+  static randomIntFromInterval(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+  static round(v, d) {
+    return v.toPrecision(d)
+  }
+
+  static randomBoolean() {
+    return Math.random() < 0.5;
+  }
+
+  static randomBoolean1orMinus1() {
+    return Utils.randomBoolean() ? -1 : 1;
+  }
+
+  static changeRedSoftness(rgba, newRed) {
+    var colorArray = rgba.match(/\d+/g).map(Number);
+    return `rgba(${newRed} ${colorArray[1]} ${colorArray[2]} ${colorArray[3]})`;
+  }
 
   static round(v, d) {
     return v.toPrecision(d)
@@ -78,6 +97,7 @@ class Utils {
   static distance(p0, p1) {
     var dx = p1.x - p0.x,
       dy = p1.y - p0.y;
+
     return Math.sqrt(dx * dx + dy * dy);
   }
 
@@ -128,5 +148,22 @@ class Utils {
 
   static randomInt(min, max) {
     return Math.floor(min + Math.random() * (max - min + 1));
+  }
+
+  static roundToPlaces(value, places) {
+    var mult = Math.pow(10, places);
+    return Math.round(value * mult) / mult;
+  }
+
+  static roundNearest(value, nearest) {
+    return Math.round(value / nearest) * nearest;
+  }
+
+  static existsMethod(method) {
+    if (method && typeof method === "function") {
+      return true;
+    }
+
+    return false;
   }
 }

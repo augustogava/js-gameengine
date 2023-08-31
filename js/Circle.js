@@ -6,11 +6,6 @@ class Circle extends ObjectMain {
     this.z = 1;
     this.accelerate(new Vector(0, 0.98)); //gravity
 
-    // this.velocity = new Vector(0, 0);
-    // this.velocity.setLength(speed);
-    // this.velocity.setAngle(direction);
-
-
     this.physics = new Physics(mass);
     // this.physics.addForce(this.physics.gravity.multiplyBy(this.mass));
   }

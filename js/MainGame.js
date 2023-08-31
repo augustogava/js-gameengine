@@ -3,10 +3,9 @@ class MainGame {
     fps = 200;
     startTime;
     followShape = false;
-    fallowShapeIndex = undefined;
+    selectedPolygon = undefined;
     animationRunning = true;
     lastShapeUsed = "CIRCLE";
-    mousePosition = new Vector(0, 0);
     resetTime = false;
     scalar = 2 * Utils.randomBoolean1orMinus1();
 
@@ -72,7 +71,7 @@ class MainGame {
             obj.update(deltaTime);
         }
 
-        this.gameObjectType.update();
+        this.gameObjectType.update(deltaTime);
 
         if (Globals.isCollisions()) {
             // @TODO this.verifyCollision();
@@ -124,32 +123,10 @@ class MainGame {
             that.resumeGameLoopState();
         });
 
-        canvas.addEventListener("mousedown", event => {
-            // event.preventDefault();
-            that.mouseDownInitPosition = new Vector(game.mousePos.getX(), game.mousePos.getY());
-            that.isMouseDown = true;
-        });
-
-        canvas.addEventListener("mouseup", event => {
-            // event.preventDefault();
-            that.isMouseDown = false;
-        });
-
-
         window.addEventListener("resize", function () {
-            event.preventDefault();
             that.setScreen();
             that.gameObjectType.resize();
-        });
-
-        document.addEventListener('mousemove', function (mouseMoveEvent) {
-            that.mousePosition.x = mouseMoveEvent.pageX;
-            that.mousePosition.y = mouseMoveEvent.pageY;
-
-            that.mousePos = new Vector(mouseMoveEvent.pageX, mouseMoveEvent.pageY);
-            // that.updateFollowObject();
         }, false);
-
 
         // document.addEventListener('keydown', (event) => {
         //     if (event.code === 'KeyP') {
@@ -199,9 +176,7 @@ class MainGame {
         if (!this.animationRunning) {
             return;
         }
-
-        console.log("pauseGameLoopState");
-
+        
         this.animationRunning = false;
     }
 
@@ -214,10 +189,10 @@ class MainGame {
     }
 
     updateFollowObject() {
-        if (this.followShape && this.objs && this.objs.length > 0 && this.fallowShapeIndex >= 0) {
-            let retObj = this.objs[this.fallowShapeIndex];
+        if (this.followShape && this.objs && this.objs.length > 0 && this.selectedPolygon >= 0) {
+            let retObj = this.objs[this.selectedPolygon];
             retObj.update(1);
-            retObj.updatePosition(new Vector(this.mousePosition.x, this.mousePosition.y));
+            retObj.updatePosition(new Vector(eventshelper.mousepos.x, eventshelper.mousepos.y));
         }
     }
 
@@ -252,8 +227,8 @@ class MainGame {
         const rect = canvas.getBoundingClientRect();
         const midpoint = canvas.height / 2;
 
-        const x = this.mousePosition.x;
-        const y = this.mousePosition.y;
+        const x = eventshelper.mousepos.x;
+        const y = eventshelper.mousepos.y;
 
         const normalizedX = x / midpoint;
         const size = Utils.randomIntFromInterval(15, 40);

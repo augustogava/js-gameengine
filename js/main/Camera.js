@@ -1,7 +1,7 @@
 class Camera {
   constructor(rocket, cx = 0, cy = 0) {
     this.rocket = rocket;
-    
+
     this.position = new Vector(cx, cy);
     this.x = cx;
     this.y = cy;
@@ -9,17 +9,21 @@ class Camera {
     this.active = false;
   }
 
+  static createCameraBox(v) {
+    return v;
+  }
+
   update() {
 
   }
 
-  updateCameraPlayer(player) {
-    if (player.camerabox) {
-      let speed = player.getSpeed();
+  updateCameraPlayer(object) {
+    if (object.camerabox) {
+      let speed = object.getSpeed();
 
       const maxWidthX = background.width - canvas.width;
       //right
-      if (player.camerabox.position.getX() + player.camerabox.width / 2 > canvas.width) {
+      if (object.camerabox.position.getX() + object.camerabox.width / 2 > canvas.width) {
         speed = -speed;
 
         if (Math.abs(background.position.x) > maxWidthX + speed) {
@@ -32,7 +36,7 @@ class Camera {
 
         this.move(speed, 0);
       } else
-        if (player.camerabox.position.getX() - player.camerabox.width / 2 < 0) {
+        if (object.camerabox.position.getX() - object.camerabox.width / 2 < 0) {
 
           if (background.position.x + speed > 0) {
             speed = 0;
@@ -43,7 +47,7 @@ class Camera {
           }
 
           this.move(speed, 0);
-        }else{
+        } else {
           speed = 0;
           this.position.multiplyBy(.94);
         }
@@ -66,7 +70,7 @@ class Camera {
   }
 
   move(dx, dy) {
-    this.position.addTo( new Vector(dx, dy) );
+    this.position.addTo(new Vector(dx, dy));
     // this.y += dy;
   }
 

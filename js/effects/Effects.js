@@ -1,9 +1,9 @@
 function cParticle(){
-	this.position = new Vector(0, 0);
-	this.direction = new Vector(0, 0);
-	this.size = 0;
+	this.position = new Vector(222, 444);
+	this.direction = new Vector(2, 0);
+	this.size = 10;
 	this.sizeSmall = 0;
-	this.timeToLive = 0;
+	this.timeToLive = 2333;
 	this.colour = [];
 	this.drawColour = "";
 	this.deltaColour = [];
@@ -204,7 +204,7 @@ Effects.prototype = {
 	
 	// Properties
 	position: new Vector(500, 500),
-	positionRandom: new Vector(0, 0),
+	positionRandom: new Vector(22, 22),
 	size:65,
 	sizeRandom:10,
 	speed:4,
@@ -228,13 +228,12 @@ Effects.prototype = {
 	emitCounter:0,
 	particleIndex:0,
 
-	init: function(data){
+	init: function(){
 		this.idUnique = Math.random()*Math.random();
 		this.emissionRate = this.maxParticles / this.lifeSpan;
 		this.emitCounter = 0;
 		this.position = new Vector(0, 0);
 		this.particles = [];
-		ctx = data.context;
 	},
 	
 	setDefault: function( index ){
@@ -302,11 +301,11 @@ Effects.prototype = {
 		return true;
 	},
 	
-	initParticle: function( particle ){
+	initParticle: function( particle ){5
 		var RANDM1TO1 = function(){ return Math.random() * 2 - 1; };
 		
-		particle.position.x = this.position.x + this.positionRandom.x * RANDM1TO1();
-		particle.position.y = this.position.y + this.positionRandom.y * RANDM1TO1();
+		particle.position.x = this.position.x + this.positionRandom.x 
+		particle.position.y = this.position.y + this.positionRandom.y 
 	
 		var newAngle = (this.angle + this.angleRandom * RANDM1TO1() ) * ( Math.PI / 180 ); // convert to radians
 		var vector = new Vector( Math.cos( newAngle ), Math.sin( newAngle ) ); // Could move to lookup for speed
@@ -344,6 +343,9 @@ Effects.prototype = {
 	},
 	
 	update: function( delta ){
+		if( !delta ){
+			delta = 0;
+		}
 		if( this.active && this.emissionRate > 0 ){
 			var rate = 1 / this.emissionRate;
 			this.emitCounter += delta;
@@ -367,8 +369,8 @@ Effects.prototype = {
 	
 				// Calculate the new direction based on gravity
 				currentParticle.direction.addTo( this.gravity );
-				currentParticle.position = Vector.add( currentParticle.position, currentParticle.direction );
-//				currentParticle.position = Vector.add( currentParticle.position, new Vector(0, 0)-5,-5) );
+				currentParticle.position = new Vector( currentParticle.position, currentParticle.direction );
+//				currentParticle.position = new Vector( currentParticle.position, new Vector(0, 0)-5,-5) );
 				currentParticle.timeToLive -= delta;
 	
 				// Update colours based on delta
@@ -411,14 +413,38 @@ Effects.prototype = {
 		for( var i = 0, j = this.particleCount; i < j; i++ ){
 			var particle = this.particles[ i ];
 			var size = particle.size;
-			var halfSize = size >> 1;
-			var x = ~~particle.position.x;
-			var y = ~~particle.position.y;
-					
-			var radgrad = ctx.createRadialGradient( x + halfSize, y + halfSize, particle.sizeSmall, x + halfSize, y + halfSize, halfSize);
-			radgrad.addColorStop( 0, particle.drawColour );   
-			radgrad.addColorStop( 1, 'rgba(0,0,0,0)' ); //Super cool if you change these values (and add more colour stops)
-			ctx.fillStyle = radgrad;
+			var halfSize = size >> 1;5
+			var x = particle.position.x;
+			var y = particle.position.y;
+
+			// ctx.strokeStyle = "red";
+			// ctx.strokeStyle = '#1AA7EC';
+			// ctx.lineWidth = "2";
+
+			// ctx.save();
+			// ctx.beginPath();
+			// ctx.strokeStyle = "red";
+			// ctx.strokeStyle = '#1AA7EC';
+			// ctx.lineWidth = "2";
+			// ctx.arc(x, y, 53, 30, 2 * Math.PI);
+			// ctx.strokeStyle = "red";
+			// ctx.strokeStyle = '#1AA7EC';
+			// ctx.lineWidth = "2";
+			// ctx.fill();
+			// ctx.strokeStyle = "red";
+			// ctx.strokeStyle = '#1AA7EC';
+			// ctx.lineWidth = "2";
+			// ctx.strokeStyle = "red";
+			// ctx.stroke();
+			// ctx.strokeStyle = "red";
+			// ctx.strokeStyle = '#1AA7EC';
+			// ctx.lineWidth = "2";
+			// ctx.closePath();
+			// ctx.restore();
+			// var radgrad = ctx.createRadialGradient(3, 2, particle.sizeSmall, x + halfSize, y + halfSize, halfSize);
+			// radgrad.addColorStop( 0, particle.drawColour );   
+			// radgrad.addColorStop( 1, 'rgba(0,0,0,0)' ); //Super cool if you change these values (and add more colour stops)
+			ctx.fillStyle = 'red';
 		  	ctx.fillRect( x, y, size, size );
 		}
 	}

@@ -57,6 +57,20 @@ class HashTable {
         }
     }
 
+    getAllObjcts() {
+        var lstOut = [];
+        this.table.forEach((values, index) => {
+            const chainedValues = values.map(
+                ([key, value]) => lstOut.push( value)
+            );
+            
+            // lstOut2 = values;
+            // console.log(`${index}: ${chainedValues}`);
+        });
+
+        return lstOut;
+    }
+
     display() {
         this.table.forEach((values, index) => {
             const chainedValues = values.map(

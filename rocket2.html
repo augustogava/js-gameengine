@@ -2,14 +2,13 @@
 <html>
 
 <head>
-    <title>---</title>
+    <title>Game</title>
     <link rel="stylesheet" href="style.css" />
 </head>
 
 <body class="game-background">
     <canvas id="gameCanvas"></canvas>
     <div id="debug"></div>
-
     <script src="js/general/Globals.js"></script>
     <script src="js/general/Utils.js"></script>
     <script src="js/general/HashSet.js"></script>
@@ -18,20 +17,33 @@
     <script src="js/general/Debug.js"></script>
     <script src="js/general/MathHelper.js"></script>
     <script src="js/general/Sprite.js"></script>
-    <script src="js/bodies/RigidBody.js"></script>
+    <script src="js/effects/Effects.js"></script>
 
+    <script src="js/world-management/FlatTransform.js"></script>
+
+    <script src="js/world-management/Fixture.js"></script>
     <script src="js/world-management/Physics.js"></script>
     <script src="js/world-management/Collisions.js"></script>
     <script src="js/world-management/CollisionGrid.js"></script>
+    <script src="js/world-management/CollisionFlat.js"></script>
+    <script src="js/bodies/BodyDef.js"></script>
+
+    <script src="js/shapes/helpers/ShapeFactory.js"></script>
+    <script src="js/shapes/helpers/PolygonShapeBuilder.js"></script>
+    <script src="js/shapes/Engine.js"></script>
+    <script src="js/shapes/PolygonShape.js"></script>
+    <script src="js/shapes/Box.js"></script>
+    <script src="js/shapes/Circle.js"></script>
 
     <script src="js/main/Camera.js"></script>
     <script src="js/main/MapGame.js"></script>
     <script src="js/main/World.js"></script>
-    <script src="js/main/GameEngine.js"></script>
+    <script src="js/main/Scene.js"></script>
+    <script src="js/main/Interections.js"></script>
 
-    <script src="js/effects/Effects.js"></script>
+    <script src="js/rocket/Ball.js"></script>
 
-    <script src="js/RocketFakeGameImp.js"></script>
+    <script src="js/rocket/RocketFakeGameImp.js"></script>
     <script src="js/MainGame.js"></script>
 
     <script>
@@ -39,7 +51,11 @@
         const ctx = canvas.getContext("2d");
 
         let game = undefined;
+        let eventshelper = undefined;
+
         window.onload = function () {
+            eventshelper = new Interections();
+
             game = new MainGame(new RocketFakeGameImp());
             game.init();
         };

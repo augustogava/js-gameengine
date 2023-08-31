@@ -4,12 +4,42 @@ class Vector {
         this.y = y;
     }
 
+    static zero() {
+        return new Vector(0, 0);
+    }
+
+    static $(x = 0, y = 0) {
+        return new Vector(x, y);
+    }
+
+    isEmpty() {
+        return (this.getX() == 0 && this.getY() == 0);
+    }
+
+    isNull() {
+        return (this.getX() == null || this.getY() == null);
+    }
+
     normalize() {
         const length = this.getLength();
         if (length == 0)
             return this;
 
         return new Vector(this.x / length, this.y / length);
+    }
+
+    dot(v) {
+        return this.x * v.x + this.y * v.y;
+    }
+
+    cross(v) {
+        return this.x * v.y - this.y * v.x;
+    }
+
+    rotate(angle) {
+        let cosA = Math.cos(angle);
+        let sinA = Math.sin(angle);
+        return new Vector(this.x * cosA - this.y * sinA, this.x * sinA + this.y * cosA);
     }
 
     setX(value) {
@@ -62,7 +92,7 @@ class Vector {
     }
 
     getLength() {
-        return Math.sqrt(this.x * this.x + this.y * this.y);
+        return Math.sqrt(this.dot(this));
     }
 
     length() {
@@ -125,5 +155,19 @@ class Vector {
 
     clone() {
         return new Vector(this.x, this.y);
+    }
+
+    distance(p1) {
+        var dx = this.x - p1.x,
+            dy = this.y - p1.y;
+
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    negate() {
+        this.x = -this.x;
+        this.y = -this.y;
+
+        return this;
     }
 }
