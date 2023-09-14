@@ -11,8 +11,14 @@ class Physics {
 
         for (let force of forces) {
             if (force.type == 1) {
+                // if( this.obj.shape )
+                //     this.obj.shape.velocity.addTo(force.value);
+
                 this.obj.velocity.addTo(force.value);
             } else if (force.type == 2) {
+                // if( this.obj.shape )
+                //     this.obj.shape.velocity.multiplyBy(force.value);
+
                 this.obj.velocity.multiplyBy(force.value);
             }
         }

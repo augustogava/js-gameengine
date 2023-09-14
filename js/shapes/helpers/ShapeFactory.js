@@ -8,7 +8,7 @@ class ShapeFactory {
             case 'circle':
                 return new Circle();
             case 'polygon':
-                return new PolygonShape(instance, s, p);
+                return new PolygonShape(instance, instance.rocketFake, s, p);
             default:
                 return new Vertex();
         }

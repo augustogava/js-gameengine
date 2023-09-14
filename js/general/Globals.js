@@ -3,6 +3,7 @@ class Globals {
   attractionObjects = false;
   verifyCollisions = true;
   debugState = true;
+  inputInteractions = false;
 
   static getBoundaries() {
     return this.boundaries;
@@ -37,5 +38,13 @@ class Globals {
 
   static setDebug(v) {
       this.debugState = v;
+  }
+
+  static isInputInteractions() {
+    return this.inputInteractions;
+  }
+
+  static setInputInteractions(v) {
+      this.inputInteractions = v;
   }
 }

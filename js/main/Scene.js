@@ -4,7 +4,7 @@ class Scene {
         this.game = g;
         this.map = null;
         this.camera = null;
-        
+        this.inputUserInteractions = null;
         this.worlds = new HashTable();
         this.worldsNew = [];
     }
@@ -34,6 +34,10 @@ class Scene {
         }
 
         return this.worlds.get(name).getObjects();
+    }
+
+    createUserInteractions() {
+        this.inputUserInteractions = InputUserFieldInteractions.enableInputModification(game);
     }
 
     createMap() {

@@ -27,7 +27,7 @@ class Collisions {
 
   }
 
-  resolveCollisionWithPolygon(obj, otherPolygon) {
+  static resolveCollisionWithPolygon(obj, otherPolygon) {
     let smallestOverlap = Infinity;
     let smallestAxis = null;
     let collisionPoint = null;
@@ -104,7 +104,7 @@ class Collisions {
     // }
   }
 
-  resolveCollisionWithCircle(obj, circle) {
+  static resolveCollisionWithCircle(obj, circle) {
     let smallestOverlap = Infinity;
     let smallestAxis = null;
     let collisionPoint = null;

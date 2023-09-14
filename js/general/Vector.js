@@ -68,15 +68,13 @@ class Vector {
         return Math.atan2(this.y, this.x);
     }
 
-
     heading() {
         var angle = this.getAngle();
         return new Vector(Math.cos(angle), Math.sin(angle));
     }
 
-
-    getHeading(angle) {
-        return new Vector(Math.cos(angle), Math.sin(angle));
+    getHeading(other) {
+        return new Vector(Math.cos(other), Math.sin(other));
     }
 
     setHeading(angle) {
@@ -136,6 +134,13 @@ class Vector {
         return this;
     }
 
+    multiplyByVector(v) {
+        var x = this.x * v.x;
+        var y = this.y * v.y;
+        
+        return new Vector(x, y);
+    }
+
     divideBy(val) {
         this.x /= val;
         this.y /= val;
@@ -157,12 +162,18 @@ class Vector {
         return new Vector(this.x, this.y);
     }
 
+
     distance(p1) {
         var dx = this.x - p1.x,
             dy = this.y - p1.y;
 
         return Math.sqrt(dx * dx + dy * dy);
     }
+
+    angle(other) {
+        return Math.atan2(other.y - this.y, other.x - this.x);
+    }
+
 
     negate() {
         this.x = -this.x;

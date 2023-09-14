@@ -228,13 +228,13 @@ class Ball extends BodyDef {
 
         this.updateBodyDef();
 
-        if( this.movement.getX() != 0  ||  this.movement.getY() != 0 ){
-            let movementForceDirection = this.movement.normalize() ;
-            let force = movementForceDirection.multiply( .5 );
-            // this.acceleration.addTo(force) ;
-            this.velocity.addTo(force) ;
+        // if( this.movement.getX() != 0  ||  this.movementSpeed.getY() != 0 ){
+        //     let movementForceDirection = this.movement.normalize() ;
+        //     let force = movementForceDirection.multiply( .5 );
+        //     // this.acceleration.addTo(force) ;
+        //     this.velocity.addTo(force) ;
 
-        }
+        // }
 
         this.acceleration.multiplyBy(.9);
 

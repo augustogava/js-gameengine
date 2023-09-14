@@ -5,23 +5,25 @@ class World {
         this.bodies = [];
 
         this.physicsWorld = new PhysicsEngine(this);
-        this.physicsWorld.addForce("gravity", {
-            "name": "gravity",
-            "type": 1,
-            "value": new Vector(0, .55)
-        });
 
         this.physicsWorld.addForce("friction", {
             "name": "friction",
             "type": 2,
-            "value": .95
+            "value": .97
         });
+        
+        // this.physicsWorld.addForce("gravity", {
+        //     "name": "gravity",
+        //     "type": 1,
+        //     "value": new Vector(0, .55)
+        // });
+
+
     }
 
     toogleGravity(){
         return !this.physicsWorld.toogleStatus();
     }
-    
 
     createWorld() {
         this.world = true;

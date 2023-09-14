@@ -1,7 +1,7 @@
-class Box extends BodyDef {
+class Box extends PolygonShape {
 	constructor(rocketFake, position) {
-		super(Box, 100, position, null, null, null);
-		this.rocketFake = rocketFake;
+		super(Box, rocketFake, null, position, 100);
+		this.physics = new Physics(this);
 
 		this.bounce = 0;
 		this.friction = 0;
@@ -16,7 +16,6 @@ class Box extends BodyDef {
 	}
 
 	draw() {
-		
 		// this.renderPoints();
 		// this.renderSticks();
 		// this.renderForms();
@@ -29,19 +28,19 @@ class Box extends BodyDef {
 
 	userAction(key) {
 		if (key === 'ArrowLeft') {
-			this.movement.addTo(new Vector(-1, 0));
+			this.movementSpeed.addTo(new Vector(-1, 0));
 		}
 
 		if (key === 'ArrowRight') {
-			this.movement.addTo(new Vector(1, 0));
+			this.movementSpeed.addTo(new Vector(1, 0));
 		}
 
 		if (key === 'ArrowUp') {
-			this.movement.addTo(new Vector(0, 1));
+			this.movementSpeed.addTo(new Vector(0, 1));
 		}
 
 		if (key === 'ArrowDown') {
-			this.movement.addTo(new Vector(-1, 0));
+			this.movementSpeed.addTo(new Vector(-1, 0));
 		}
 	}
 
@@ -133,4 +132,22 @@ class Box extends BodyDef {
 			}
 		}
 	}
+
+	getInputFieldsConfig(){
+        return {
+            'Box': [
+                // { id: 'speed', label: 'Speed', type: 'number', value: this.getSpeed() },
+                { id: 'color', label: 'Color', type: 'color', value: this.color },
+                { id: 'width', label: 'Radius', type: 'number', value: this.radius },
+                // { id: 'mass', label: 'Mass', type: 'number', value: this.mass },
+                // { id: 'width', label: 'Width', type: 'number', value: rocketWidth },
+                { id: 'positionX', label: 'Position X', type: 'number', value: this.position.getX() },
+                { id: 'positionY', label: 'Position Y', type: 'number', value: this.position.getY() }
+            ]
+        };
+    }
+
+    updateFieldUserInstance(property, value){
+        console.log(property)
+    }
 }
