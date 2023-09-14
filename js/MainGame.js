@@ -18,7 +18,6 @@ class MainGame {
         Globals.setBoundaries(true);
         Globals.setCollisions(true);
         Globals.setDebug(true);
-        // Globals.setCollisions(true);
 
         this.setScreen();
         this.objs = [];
@@ -39,11 +38,9 @@ class MainGame {
         if (Globals.isCollisions()) {
             this.collisionGrid = new CollisionGrid(canvas.width, canvas.height, 2);
         }
-
     }
 
     starLoop() {
-        // requestAnimationFrame(this.gameLoop.bind(this));
         this.gameLoop();
     }
 
@@ -72,13 +69,7 @@ class MainGame {
         }
 
         this.gameObjectType.update(deltaTime);
-
-        if (Globals.isCollisions()) {
-            // @TODO this.verifyCollision();
-        }
     }
-
-
 
     draw() {
         if (this.ctxClearScreen) {
@@ -86,7 +77,6 @@ class MainGame {
         }
 
         this.addText(`${this.fps}`, 10, 20, 15, "white");
-
         for (let objIntte of this.objs) {
             //objIntte.draw();
 
@@ -96,7 +86,6 @@ class MainGame {
         }
 
         this.gameObjectType.draw();
-
         // this.debug()
     }
 
@@ -128,36 +117,7 @@ class MainGame {
             that.gameObjectType.resize();
         }, false);
 
-        // document.addEventListener('keydown', (event) => {
-        //     if (event.code === 'KeyP') {
-        //         that.invertGameLoopState();
-        //     }
-
-        //     if (event.code === 'KeyN') {
-        //         this.addParticles();
-        //     }
-
-
-        //     if (event.code === 'KeyF') {
-        //         this.followShape = !this.followShape;
-
-        //         if (that.fallowShapeIndex) {
-        //             this.objs[that.fallowShapeIndex].changePhysicsState(false);
-        //             that.fallowShapeIndex = undefined;
-        //         } else if (!that.fallowShapeIndex) {
-        //             this.fallowShapeIndex = Utils.randomIntFromInterval(0, that.objs.length - 1);
-        //             this.objs[that.fallowShapeIndex].changePhysicsState(true);
-
-        //             this.updateFollowObject();
-        //         }
-
-        //         return;
-        //     }
-
-        // });
-
         this.gameObjectType.userInteractions();
-
     }
 
     resumeGameLoopState() {
@@ -166,7 +126,6 @@ class MainGame {
         }
 
         console.log("resumeGameLoopState");
-
         this.resetTime = true;
         this.animationRunning = true;
         this.starLoop();
@@ -176,7 +135,7 @@ class MainGame {
         if (!this.animationRunning) {
             return;
         }
-        
+
         this.animationRunning = false;
     }
 
@@ -184,6 +143,7 @@ class MainGame {
         if (!this.animationRunning) {
             this.resetTime = true;
         }
+
         this.animationRunning = !this.animationRunning;
         this.starLoop();
     }
@@ -206,21 +166,6 @@ class MainGame {
 
     addObject(obj) {
         this.objs.push(obj);
-    }
-
-    addParticles() {
-        // this.addShape( "CIRCLE");
-        var self = this;
-        setInterval(function () { self.addFlow(); }, 100)
-    }
-
-    addFlow() {
-        const x = -10;
-        const y = 150 + Utils.randomIntFromInterval(-2, 2);
-        const size = Utils.randomIntFromInterval(4, 20);
-        const mass = Utils.randomIntFromInterval(1, 1) * size / 1000;
-
-        this.addObject(new Circle(new Vector(x, y), mass, size, 0, 10 + Utils.randomIntFromInterval(-2, 2), 5.9 + Utils.randomIntFromInterval(0, 50) / 10));
     }
 
     addShape(shapeType) {
@@ -262,12 +207,5 @@ class MainGame {
             this.frameCount = 0;
             this.startTime = currentTime;
         }
-    }
-
-    debug() {
-        // if (Globals.isDebug()) {
-        //     this.debugger.draw();
-        // }
-
     }
 }

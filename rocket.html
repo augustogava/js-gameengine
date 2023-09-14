@@ -1,31 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <title>Game</title>
-    <link rel="stylesheet" href="style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Form</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body class="game-background">
     <canvas id="gameCanvas"></canvas>
-    <div id="debug"></div>
+
+    <div id="debugArea"></div>
+
     <script src="js/general/Globals.js"></script>
     <script src="js/general/Utils.js"></script>
     <script src="js/general/HashSet.js"></script>
     <script src="js/general/ImageHelper.js"></script>
     <script src="js/general/Vector.js"></script>
-    <script src="js/general/Debug.js"></script>
+    <script src="js/general/Debugger.js"></script>
     <script src="js/general/MathHelper.js"></script>
     <script src="js/general/Sprite.js"></script>
     <script src="js/effects/Effects.js"></script>
 
-    <script src="js/world-management/FlatTransform.js"></script>
+    <script src="js/world-management/future/FlatTransform.js"></script>
+    <script src="js/world-management/future/CollisionGrid.js"></script>
 
     <script src="js/world-management/Fixture.js"></script>
     <script src="js/world-management/Physics.js"></script>
     <script src="js/world-management/Collisions.js"></script>
-    <script src="js/world-management/CollisionGrid.js"></script>
     <script src="js/world-management/CollisionFlat.js"></script>
+
     <script src="js/bodies/BodyDef.js"></script>
 
     <script src="js/shapes/helpers/ShapeFactory.js"></script>
@@ -40,6 +45,8 @@
     <script src="js/main/World.js"></script>
     <script src="js/main/Scene.js"></script>
     <script src="js/main/Interections.js"></script>
+    <script src="js/main/InputUserFieldInteractions.js"></script>
+
 
     <script src="js/rocket/Ball.js"></script>
 
@@ -55,6 +62,7 @@
 
         window.onload = function () {
             eventshelper = new Interections();
+
 
             game = new MainGame(new RocketFakeGameImp());
             game.init();

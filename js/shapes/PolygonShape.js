@@ -1,7 +1,9 @@
 
 class PolygonShape extends BodyDef {
-	constructor(polygon, type, position) {
-		super(PolygonShape, 100, position, null, null, null);
+	constructor(polygon, rocketFake, type, position, mass) {
+		super(PolygonShape, mass, position, null, null, null);
+		
+		this.rocketFake = rocketFake;
 		this.polygon = polygon;
 		this.shape = this;
 		this.engine = null;
@@ -24,6 +26,9 @@ class PolygonShape extends BodyDef {
 		this.isrenderEdges = true;
 		this.isrenderForm = true;
 		this.isrenderEngine = true;
+
+		this.velocity = new Vector(0, 0);
+        this.acceleration = new Vector(0, 0);
 
 		if( type && type == "box" ){
 			let p = PolygonShapeBuilder.createBox(position);
@@ -206,6 +211,9 @@ class PolygonShape extends BodyDef {
 		this.angularVelocity = this.angularVelocity * this.angularDamping;
 		this.rotation += this.angularVelocity; // Multiply by deltaTime
 		this.torque = 0;
+
+
+		
 	}
 
 	translate(delta) {

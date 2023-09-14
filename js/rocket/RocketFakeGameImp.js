@@ -17,15 +17,19 @@ class RocketFakeGameImp extends Scene {
         this.createWorld('main');
         this.createMap();
         this.createCamera();
+        this.createUserInteractions();
+
 
         this.players = [];
         this.npc = [];
 
-        var ball1 = new Ball(this, new Vector(400, canvas.height - 100));
+        Globals.setInputInteractions(true);
+
+        var ball1 = new Ball(this, new Vector(400, 500), 22);
         var fix = new Fixture(ball1);
         ball1.addFixture(fix);
 
-        var ball2 = new Ball(this, new Vector(600, 500));
+        var ball2 = new Ball(this, new Vector(600, 500), 5);
         var fixBall2 = new Fixture(ball2);
         ball2.addFixture(fixBall2);
 
@@ -37,20 +41,17 @@ class RocketFakeGameImp extends Scene {
         var fixPol2 = new Fixture(box2, 1);
         box2.addFixture(fixPol2);
 
-        // this.addWorldObj('main', ball1);
+        this.addWorldObj('main', ball1);
         // this.addWorldObj('main', ball2);
-        
-        this.addWorldObj('main', box);
+
+        // this.addWorldObj('main', box);
         // this.addWorldObj('main', box2);
-
-        this.keypressed = false;
-
         // var b = new Box();
         // b.draw();
         // this.addWorldObj('effects', ef);
     }
 
-    init(v = 0) {
+    init() {
 
     }
 
@@ -60,10 +61,13 @@ class RocketFakeGameImp extends Scene {
 
     selectObjectFromMousePos() {
         var inside = false;
-        for (let obj of this.getWorldObjs('main')) { // Assuming polygons is an array of all your Polygon objects
+        for (let obj of this.getWorldObjs('main')) {
             if (obj.containsPoint(eventshelper.mousepos)) {
                 this.selectedBody = obj;
                 inside = true;
+                if (Globals.isInputInteractions()) {
+                    this.showInputs(obj);
+                }
                 break;
             }
         }
@@ -72,6 +76,16 @@ class RocketFakeGameImp extends Scene {
             this.selectedBody = false;
 
             return;
+        }
+    }
+
+    showInputs(obj) {
+        if (!obj) {
+            return;
+        }
+
+        if (Utils.existsMethod(obj.getInputFieldsConfig)) {
+            this.inputUserInteractions.bindDynamicObject(obj, 'Circle');
         }
     }
 
@@ -88,13 +102,10 @@ class RocketFakeGameImp extends Scene {
 
         document.addEventListener('mousedown', function (e) {
             thatRocket.selectObjectFromMousePos();
-            // thatRocket.initBoost();
         }, false);
-    
+
 
         document.addEventListener('keydown', (event) => {
-            // thatRocket.keypressed = event.code;
-        
             if (event.code === 'KeyK') {
                 Globals.setDebug(!Globals.isDebug());
             }

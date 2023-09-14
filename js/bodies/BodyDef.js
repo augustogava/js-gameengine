@@ -38,27 +38,32 @@ class BodyDefType {
 
 class BodyDef {
     constructor(instance, mass, position, degrees, speed, direction) {
-        this.physics = new Physics(this);
+        this.physics = null;
 
         this.id = Utils.randomIntFromInterval(1, 5000);
         this.currentTime = Date.now();
+
         this.mass = mass ? mass : 1;
-        this.invMass = 1 / this.mass;
+        this.invMass = ( this.mass === 0 ) ? 0 : ( 1 / this.mass);
 
         this.fixtures = [];
 
         this.instance = instance;
 
-        this.color = "rgba(0,0,0, 1)";
+        this.colorOriginal = "rgba(0,0,0, 1)";
+        this.colorUserSelected = "red";
+
+        this.color = this.colorOriginal;
         this.colorProjection = Utils.changeRedSoftness(this.color, 200);
         this.colorShadow = Utils.changeRedSoftness(this.color, 0);
-        this.colorUserSelected = "red";
 
         ctx.strokeStyle = this.color;
         ctx.fillStyle = this.color;
 
         this.density = 1;
         this.friction = 1;
+        this.elastisticy = 1;
+
         this.restitution = 1;
 
         this.velocity = new Vector(0, 0);
@@ -69,7 +74,10 @@ class BodyDef {
         this.positionOld = position;
 
         this.direction = new Vector(0, 0);
+        
         this.acceleration = new Vector(0, 0);
+        this.accelerationHelper = new Vector(0, 0);
+
         this.movement = new Vector(0, 0);
 
         if (speed)
@@ -99,7 +107,6 @@ class BodyDef {
             if (typeof this.update === "function") {
                 this.update(d);
             }
-
         }
 
         if (Globals.getBoundaries()) {
@@ -112,6 +119,10 @@ class BodyDef {
 
         if (Globals.isAttraction()) {
             obj.attract();
+        }
+
+        if (Globals.isInputInteractions() && Utils.existsMethod(this.rocketFake.inputUserInteractions.updateFromBoundObject)) {
+            this.rocketFake.inputUserInteractions.updateFromBoundObject();
         }
 
         // console.log(eventshelper.get())
@@ -167,14 +178,17 @@ class BodyDef {
         if (!this.rocketFake) {
             return false;
         }
-
-        if (this === this.rocketFake.selectedBody) {
+        
+        if (this === this.rocketFake.selectedBody || ( this.shape && this.shape.polygon &&   this.shape.polygon === this.rocketFake.selectedBody ) ) {
             return true;
         }
+
+        return false;
     }
 
     isDragging() {
-        if (!this.rocketFake || !this.isSelected()) {
+        // console.log(this.rocketFake.selectedBody )
+         if (!this.isSelected()) {
             return false;
         }
 
@@ -211,21 +225,29 @@ class BodyDef {
         if (this.position.y + this.radius >= canvas.height) {
             this.position.y = canvas.height - this.radius;
             this.velocity.y = this.velocity.y * -1;
+            
+            this.velocity.multiplyBy(this.elastisticy);
         }
 
         if (this.position.y - this.radius <= 0) {
             this.position.y = this.radius;
             this.velocity.y = this.velocity.y * -1;
+
+            this.velocity.multiplyBy(this.elastisticy);
         }
 
         if (this.position.x + this.radius >= canvas.width) {
             this.position.x = canvas.width - this.radius;
             this.velocity.x = this.velocity.x * -1;
+
+            this.velocity.multiplyBy(this.elastisticy);
         }
 
         if (this.position.x - this.radius <= 0) {
             this.position.x = 0 + this.radius;
             this.velocity.x = this.velocity.x * -1;
+
+            this.velocity.multiplyBy(this.elastisticy);
         }
     }
 
@@ -253,12 +275,29 @@ class BodyDef {
         }
 
         if (this.isSelected()) {
+            this.color = this.colorUserSelected;
+
             ctx.fillStyle = this.colorUserSelected;// 'rgba(44, 100, 10, 1)'; // Change color for selected polygon
             ctx.strokeStyle = this.colorUserSelected;//// Change color for selected polygon
+        }else{
+            this.color = this.colorOriginal;
+
+            ctx.fillStyle = this.colorOriginal;// 'rgba(44, 100, 10, 1)'; // Change color for selected polygon
+            ctx.strokeStyle = this.colorOriginal;
         }
     }
 
     getSpeedByPosition() {
         return this.position.subtract(this.positionOld);
+    }
+
+    updateFieldUser(last, v){
+        if (this.shape && typeof this.shape.updateFieldUserInstance === "function") {
+            this.shape.updateFieldUserInstance(last, v);
+        } else {
+            if (typeof this.updateFieldUserInstance === "function") {
+                this.updateFieldUserInstance(last, v);
+            }
+        }
     }
 }
