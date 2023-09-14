@@ -121,9 +121,9 @@ class BodyDef {
             obj.attract();
         }
 
-        if (Globals.isInputInteractions() && Utils.existsMethod(this.rocketFake.inputUserInteractions.updateFromBoundObject)) {
-            this.rocketFake.inputUserInteractions.updateFromBoundObject();
-        }
+        // if (Globals.isInputInteractions() && Utils.existsMethod(this.rocketFake.inputUserInteractions.updateFromBoundObject)) {
+        //     // this.rocketFake.inputUserInteractions.updateFromBoundObject();
+        // }
 
         // console.log(eventshelper.get())
         this.worldStuffEnabled = true;
