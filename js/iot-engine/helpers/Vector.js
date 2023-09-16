@@ -181,4 +181,33 @@ class Vector {
 
         return this;
     }
+
+    unit(){
+        if(this.mag() === 0){
+            return new Vector(0,0);
+        } else {
+            return new Vector(this.x/this.mag(), this.y/this.mag());
+        }
+    }
+
+    mag(){
+        return Math.sqrt(this.x**2 + this.y**2);
+    }
+
+    mult(n){
+        return new Vector(this.x*n, this.y*n);
+    }
+
+    normal(){
+        return new Vector(-this.y, this.x).unit();
+    }
+
+    drawVec(start_x, start_y, n, color){
+        ctx.beginPath();
+        ctx.moveTo(start_x, start_y);
+        ctx.lineTo(start_x + this.x * n, start_y + this.y * n);
+        ctx.strokeStyle = color;
+        ctx.stroke();
+        ctx.closePath();
+    }
 }

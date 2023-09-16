@@ -1,4 +1,4 @@
-class Engine {
+class ShapeEngine {
 	constructor(pos, basePos) {
 		this.position = pos;
 		this.basePosition = basePos;

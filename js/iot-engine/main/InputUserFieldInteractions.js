@@ -12,6 +12,16 @@ class InputUserFieldInteractions {
     init() {
         this.injectStyles();
         this.createContainer();
+
+        this.createBindUpdate();
+    }
+
+    createBindUpdate() {
+        setTimeout(() => {
+            this.updateFromBoundObject();
+            this.createBindUpdate();
+        } , 1000);
+
     }
 
     injectStyles() {

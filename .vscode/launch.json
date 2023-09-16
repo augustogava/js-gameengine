@@ -4,7 +4,7 @@
             "type": "chrome",
             "name": "Rocket",
             "request": "launch",
-            "url": "http://127.0.0.1:3000/rocket.html"
+            "url": "http://127.0.0.1:3000/index.html"
         }
     ]
 }

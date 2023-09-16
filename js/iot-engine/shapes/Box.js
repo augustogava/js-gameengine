@@ -150,4 +150,22 @@ class Box extends PolygonShape {
     updateFieldUserInstance(property, value){
         console.log(property)
     }
+
+	rotMx(angle){
+		let mx = new Matrix(2,2);
+		mx.data[0][0] = Math.cos(angle);
+		mx.data[0][1] = -Math.sin(angle);
+		mx.data[1][0] = Math.sin(angle);
+		mx.data[1][1] = Math.cos(angle);
+		return mx;
+	}
+
+    getVertices(){
+        this.rotMat = Matrix.rotMx(this.angle);
+        this.dir = this.rotMat.multiplyVec(this.refDir);
+        this.vertex[0] = this.pos.add(this.dir.mult(-this.length/2)).add(this.dir.normal().mult(this.width/2));
+        this.vertex[1] = this.pos.add(this.dir.mult(-this.length/2)).add(this.dir.normal().mult(-this.width/2));
+        this.vertex[2] = this.pos.add(this.dir.mult(this.length/2)).add(this.dir.normal().mult(-this.width/2));
+        this.vertex[3] = this.pos.add(this.dir.mult(this.length/2)).add(this.dir.normal().mult(this.width/2));
+    }
 }

@@ -2,13 +2,14 @@
 class PolygonShape extends BodyDef {
 	constructor(polygon, rocketFake, type, position, mass) {
 		super(PolygonShape, mass, position, null, null, null);
-		
+
 		this.rocketFake = rocketFake;
 		this.polygon = polygon;
 		this.shape = this;
 		this.engine = null;
 
 		this.vertices = [];
+
 		this.edges = [];
 		this.faces = [];
 
@@ -28,31 +29,36 @@ class PolygonShape extends BodyDef {
 		this.isrenderEngine = true;
 
 		this.velocity = new Vector(0, 0);
-        this.acceleration = new Vector(0, 0);
+		this.acceleration = new Vector(0, 0);
 
-		if( type && type == "box" ){
+		if (type && type == "box") {
 			let p = PolygonShapeBuilder.createBox(position);
-			
+
 			this.vertices = p.vertices;
 			this.edges = p.edges;
 			this.faces = p.faces;
 		}
+
+		if (this.vertices.length > 2) {
+			// this.dir = this.vertices[1].subtract(this.vertices[0]).unit();
+			// this.mag = this.vertices[1].subtract(this.vertices[0]).mag();
+		}
 	}
 
 	draw() {
-		if( this.isrenderVertixes ){
+		if (this.isrenderVertixes) {
 			this.renderVertixes();
 		}
 
-		if( this.isrenderEdges ){
+		if (this.isrenderEdges) {
 			this.renderEdges();
 		}
 
-		if( this.isrenderForm ){
+		if (this.isrenderForm) {
 			this.renderForms();
 		}
 
-		if( this.isrenderEngine ){
+		if (this.isrenderEngine) {
 			this.renderEngines();
 		}
 	}
@@ -163,7 +169,6 @@ class PolygonShape extends BodyDef {
 
 	updateVertixes() {
 		// this.velocity.addTo(this.acceleration);
-		// this.velocity.multiplyBy(.99);
 
 		for (var i = 0; i < this.vertices.length; i++) {
 			var p = this.vertices[i];
@@ -174,8 +179,10 @@ class PolygonShape extends BodyDef {
 				p.oldPosition = p.position.clone();
 
 				p.position.addTo(new Vector(vx, vy));
-				// p.position.addTo(new Vector(0, .5));
-				p.position.addTo(this.velocity);
+				p.position.addTo(new Vector(0, .5));
+				// p.position.addTo(this.velocity);
+				this.velocity.multiplyBy(.99);
+
 			}
 		}
 
@@ -213,7 +220,7 @@ class PolygonShape extends BodyDef {
 		this.torque = 0;
 
 
-		
+
 	}
 
 	translate(delta) {

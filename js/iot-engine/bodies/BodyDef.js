@@ -121,9 +121,9 @@ class BodyDef {
             obj.attract();
         }
 
-        if (Globals.isInputInteractions() && Utils.existsMethod(this.rocketFake.inputUserInteractions.updateFromBoundObject)) {
-            this.rocketFake.inputUserInteractions.updateFromBoundObject();
-        }
+        // if (Globals.isInputInteractions() && Utils.existsMethod(this.rocketFake.inputUserInteractions.updateFromBoundObject)) {
+        //     // this.rocketFake.inputUserInteractions.updateFromBoundObject();
+        // }
 
         // console.log(eventshelper.get())
         this.worldStuffEnabled = true;
@@ -140,15 +140,15 @@ class BodyDef {
         }
     }
 
-    updatecamerabox() {
-        if (this.camerabox) {
-            this.camerabox = {
-                position: new Vector(this.position.getX(), this.position.getY()),
-                width: canvas.width / 2.3,
-                height: this.camerabox.height
-            }
-        }
-    }
+    // updatecamerabox() {
+    //     if (this.camerabox) {
+    //         this.camerabox = {
+    //             position: new Vector(this.position.getX(), this.position.getY()),
+    //             width: canvas.width / 2.3,
+    //             height: this.camerabox.height
+    //         }
+    //     }
+    // }
 
     addFixture(fixture) {
         this.fixtures.push(fixture);

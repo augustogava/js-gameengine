@@ -1,4 +1,4 @@
-class MainGame {
+class Engine {
     frameCount = 0;
     fps = 200;
     startTime;
