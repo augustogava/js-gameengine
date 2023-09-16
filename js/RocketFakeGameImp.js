@@ -24,6 +24,7 @@ class RocketFakeGameImp extends Scene {
 
 
         var ball1 = new Ball(this, new Vector(400, 500), 22);
+        ball1.radius = 20;
         ball1.addCamera();
 
         var fix = new Fixture(ball1);
@@ -41,13 +42,19 @@ class RocketFakeGameImp extends Scene {
         var fixPol2 = new Fixture(box2, 1);
         box2.addFixture(fixPol2);
 
-        
+        var box3 = new Box(this, new Vector(320, 220));
+        var fixPol3 = new Fixture(box3, 1);
+        box3.addFixture(fixPol3);
+
+
 
         this.addWorldObj('main', ball1);
         this.addWorldObj('main', ball2);
 
-        // this.addWorldObj('main', box);
-        // this.addWorldObj('main', box2);
+        this.addWorldObj('main', box);
+        this.addWorldObj('main', box2);
+        this.addWorldObj('main', box3);
+
         // var b = new Box();
         // b.draw();
         // this.addWorldObj('effects', ef);
