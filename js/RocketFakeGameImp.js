@@ -10,9 +10,11 @@ const keys = {
 class RocketFakeGameImp extends Scene {
     constructor() {
         super(RocketFakeGameImp);
+        Globals.setInputInteractions(true);
+        this.players = [];
+        this.npc = [];
+    
         this.selectedBody = null;
-        this.isDragging = false;
-        this.speed = .55;
 
         this.createWorld('main');
         this.createMap();
@@ -20,12 +22,10 @@ class RocketFakeGameImp extends Scene {
         this.createUserInteractions();
 
 
-        this.players = [];
-        this.npc = [];
-
-        Globals.setInputInteractions(true);
 
         var ball1 = new Ball(this, new Vector(400, 500), 22);
+        ball1.addCamera();
+
         var fix = new Fixture(ball1);
         ball1.addFixture(fix);
 
@@ -41,8 +41,10 @@ class RocketFakeGameImp extends Scene {
         var fixPol2 = new Fixture(box2, 1);
         box2.addFixture(fixPol2);
 
+        
+
         this.addWorldObj('main', ball1);
-        // this.addWorldObj('main', ball2);
+        this.addWorldObj('main', ball2);
 
         // this.addWorldObj('main', box);
         // this.addWorldObj('main', box2);

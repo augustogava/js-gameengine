@@ -300,4 +300,12 @@ class BodyDef {
             }
         }
     }
+
+    addCamera(){
+        this.camerabox = Camera.createCameraBox({
+            position: new Vector(this.position.getX(), this.position.getY()),
+            width: 600,
+            height: 300
+        });
+    }
 }
