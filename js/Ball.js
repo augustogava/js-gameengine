@@ -20,12 +20,6 @@ class Ball extends BodyDef {
         ctx.fillStyle = this.color;
 
         this.elastisticy = .85;
-
-        this.camerabox = Camera.createCameraBox({
-            position: new Vector(this.position.getX(), this.position.getY()),
-            width: 600,
-            height: 300
-        });
         
         this.init();
     }
