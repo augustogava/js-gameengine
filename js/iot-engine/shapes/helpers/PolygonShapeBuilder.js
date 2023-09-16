@@ -26,8 +26,8 @@ class PolygonShapeBuilder {
 		edges.push(new Edge(p4, p1, p4.position.distance(p1.position), 3));
 		edges.push(new Edge(p1, p3, p1.position.distance(p3.position), 3, true));
 
-		// engine = new Engine(new Vector(300, 139), new Vector(300, 139));
-		// edges.push(new Edge(engine, p1, engine.position.distance(p1.position), 3));
+		// ShapeEngine = new ShapeEngine(new Vector(300, 139), new Vector(300, 139));
+		// edges.push(new Edge(ShapeEngine, p1, ShapeEngine.position.distance(p1.position), 3));
 		// edges.push(new Edge(p6, p7, p6.position.distance(p7.position), 3));
 
 		faces.push(new Face([p1, p2, p3, p4]));

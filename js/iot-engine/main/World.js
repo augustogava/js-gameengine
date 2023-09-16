@@ -9,14 +9,14 @@ class World {
         this.physicsWorld.addForce("friction", {
             "name": "friction",
             "type": 2,
-            "value": .97
+            "value": .98
         });
         
-        // this.physicsWorld.addForce("gravity", {
-        //     "name": "gravity",
-        //     "type": 1,
-        //     "value": new Vector(0, .55)
-        // });
+        this.physicsWorld.addForce("gravity", {
+            "name": "gravity",
+            "type": 1,
+            "value": new Vector(0, .55)
+        });
 
 
     }
