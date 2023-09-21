@@ -31,7 +31,7 @@ class PolygonShape extends BodyDef {
 		this.velocity = new Vector(0, 0);
 		this.acceleration = new Vector(0, 0);
 
-		if (type && type == "box") {
+		if (type && type == "rectangle") {
 			let p = PolygonShapeBuilder.createBox(position);
 
 			this.vertices = p.vertices;
@@ -218,9 +218,6 @@ class PolygonShape extends BodyDef {
 		this.angularVelocity = this.angularVelocity * this.angularDamping;
 		this.rotation += this.angularVelocity; // Multiply by deltaTime
 		this.torque = 0;
-
-
-
 	}
 
 	translate(delta) {

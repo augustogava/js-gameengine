@@ -4,33 +4,37 @@ class Physics {
         this.obj = obj;
     }
 
-    applyPhysics(forces) {
+    applyForceCalculated(object, forces) {
         if (!forces) {
+            return;
+        }
+
+        if (!this.obj.bodyType || ( this.obj.bodyType && (!this.obj.bodyType.bodyType.moved && !this.obj.bodyType.bodyType.velocity) )){
             return;
         }
 
         for (let force of forces) {
             if (force.type == 1) {
-                // if( this.obj.shape )
-                //     this.obj.shape.velocity.addTo(force.value);
-
-                this.obj.velocity.addTo(force.value);
+                if (this.obj.shape && this.obj.shape.velocity)
+                    this.obj.shape.velocity.addTo(force.value);
+                else
+                    this.obj.velocity.addTo(force.value);
             } else if (force.type == 2) {
-                // if( this.obj.shape )
-                //     this.obj.shape.velocity.multiplyBy(force.value);
-
-                this.obj.velocity.multiplyBy(force.value);
+                if (this.obj.shape && this.obj.shape.velocity)
+                    this.obj.shape.velocity.multiplyBy(force.value);
+                else
+                    this.obj.velocity.multiplyBy(force.value);
             }
         }
     }
-     
+
     applyForce(force) {
         // Assuming the polygon has a mass property
         let forceAcc = force.divide(this.mass);
         this.acceleration.addTo(forceAcc);
     }
 
-    getAngularVelocity(obj2 ) {
+    getAngularVelocity(obj2) {
 
         const prevCenter = this.obj.getCenter();
         const delta = obj2.subtract(prevCenter);
@@ -56,15 +60,15 @@ class PhysicsEngine {
         this.bounce = 1;
         this.enabled = true;
     }
-    
-    status(){
+
+    status() {
         return this.enabled;
     }
 
-    toogleStatus(){
-        this.enabled =  !this.enabled;
+    toogleStatus() {
+        this.enabled = !this.enabled;
     }
-    
+
     addForce(n, v) {
         this.forcesHash.set(n, new Force(v));
     }

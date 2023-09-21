@@ -3,7 +3,7 @@ class ShapeFactory {
         switch (type) {
             case 'point':
                 return new Vertex();
-            case 'box':
+            case 'rectangle':
                 return new Box(instance, p);
             case 'circle':
                 return new Circle();

@@ -4,38 +4,33 @@
 <head>
     <title>Game</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Form</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body class="game-background">
     <canvas id="gameCanvas"></canvas>
 
-    <div id="debugArea"></div>
-
-    <script src="js/iot-engine/helpers//Globals.js"></script>
-    <script src="js/iot-engine/helpers//Utils.js"></script>
-    <script src="js/iot-engine/helpers//HashSet.js"></script>
-    <script src="js/iot-engine/helpers//ImageHelper.js"></script>
-    <script src="js/iot-engine/helpers//Vector.js"></script>
-    <script src="js/iot-engine/helpers//Debugger.js"></script>
-    <script src="js/iot-engine/helpers//MathHelper.js"></script>
-
-    <script src="js/iot-engine/effects/Effects.js"></script>
-
-    <script src="js/iot-engine/world-management/future/FlatTransform.js"></script>
-    <script src="js/iot-engine/world-management/future/CollisionGrid.js"></script>
+    <!-- <div id="debugArea"></div> -->
 
     <script src="js/iot-engine/world-management/Fixture.js"></script>
 
+    <script src="js/iot-engine/helpers/Globals.js"></script>
+    <script src="js/iot-engine/helpers/Utils.js"></script>
+    <script src="js/iot-engine/helpers/HashSet.js"></script>
+    <script src="js/iot-engine/helpers/ImageHelper.js"></script>
+    <script src="js/iot-engine/helpers/Vector.js"></script>
+    <script src="js/iot-engine/helpers/MathHelper.js"></script>
+    <script src="js/iot-engine/helpers/Debugger.js"></script>
+
+    <script src="js/iot-engine/effects/Effects.js"></script>
+
+
     <script src="js/iot-engine/physics/Matrix.js"></script>
-
     <script src="js/iot-engine/physics/Physics.js"></script>
+    <script src="js/iot-engine/physics/PhysicsComplex.js"></script>
 
-
-    <!-- <script src="js/iot-engine/world-management/Physics.js"></script> -->
-    <script src="js/iot-engine/world-management/Collisions.js"></script>
-    <script src="js/iot-engine/world-management/CollisionFlat.js"></script>
+    <!-- <script src="js/iot-engine/world-management/Collisions.js"></script>
+    <script src="js/iot-engine/world-management/CollisionFlat.js"></script> -->
 
     <script src="js/iot-engine/bodies/BodyDef.js"></script>
 
@@ -43,8 +38,15 @@
     <script src="js/iot-engine/shapes/helpers/PolygonShapeBuilder.js"></script>
     <script src="js/iot-engine/shapes/ShapeEngine.js"></script>
     <script src="js/iot-engine/shapes/PolygonShape.js"></script>
+
+    <script src="js/iot-engine/shapes/fundamental/BasicForms.js"></script>
+
+    <script src="js/iot-engine/shapes/fundamental/Line.js"></script>
+    <script src="js/iot-engine/shapes/fundamental/Circle.js"></script>
+    <script src="js/iot-engine/shapes/fundamental/Rectangle.js"></script>
+
     <script src="js/iot-engine/shapes/Box.js"></script>
-    <script src="js/iot-engine/shapes/Circle.js"></script>
+    <script src="js/iot-engine/shapes/Wall.js"></script>
 
     <script src="js/iot-engine/main/Sprites.js"></script>
 
@@ -54,7 +56,6 @@
     <script src="js/iot-engine/main/Scene.js"></script>
     <script src="js/iot-engine/main/Interections.js"></script>
     <script src="js/iot-engine/main/InputUserFieldInteractions.js"></script>
-
 
     <script src="js/Ball.js"></script>
     <script src="js/RocketFakeGameImp.js"></script>
@@ -71,12 +72,9 @@
         window.onload = function () {
             eventshelper = new Interections();
 
-
             game = new Engine(new RocketFakeGameImp());
             game.init();
         };
     </script>
-
 </body>
-
 </html>
