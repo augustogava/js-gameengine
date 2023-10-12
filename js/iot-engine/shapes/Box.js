@@ -1,48 +1,95 @@
-class Box extends PolygonShape {
-	constructor(rocketFake, position) {
-		super(Box, rocketFake, null, position, 100);
+class Box extends BodyDef {
+	constructor(rocketFake, x1, y1, x2, y2, mass, width, angle) {
+		super(Box, mass, new Vector(x1, y1));
+		this.rocketFake = rocketFake;
 		this.physics = new Physics(this);
 
 		this.bounce = 0;
-		this.friction = 0;
+		this.friction = .7;
 
-		this.shape = ShapeFactory.createShape('polygon', 'box', this, position);
-		this.shape.polygon = this;
+		this.setBodyType('dynamic');
+
+		this.shape = new Rectangle(x1, y1, x2, y2, width, angle)
 
 		this.vertices = this.shape.vertices;
 		this.edges = this.shape.edges;
 		this.faces = this.shape.faces;
 
+		this.position = this.shape.getPosition();
+
+		this.inertia = this.mass* (this.shape.width ** 2 + this.shape.length ** 2) / 12;
+		if (this.mass=== 0) {
+			this.inv_inertia = 0;
+		} else {
+			this.inv_inertia = 1 / this.inertia;
+		} 
 	}
 
-	draw() {
-		// this.renderPoints();
-		// this.renderSticks();
-		// this.renderForms();
-		// this.renderEngines();
+	draw() { this.shape.draw();	}
+
+	update(d) {
+		if (this.isDragging()) {
+			let delta = eventshelper.mousepos.subtract(this.getCenter());
+			this.shape.position = delta;
+
+			this.shape.getVertices();
+
+			this.position = this.shape.getPosition();
+		} else {
+			this.shape.update(d);
+
+			this.position = this.shape.getPosition();
+		}
+
+		this.shape.acceleration = new Vector(0,0);
 	}
 
-	update(){
-		
+	userAction(key) {	
+		if (eventshelper.keycode) {
+
+            if (eventshelper.keycode === 'ArrowLeft') {
+                this.shape.acceleration.addTo(new Vector(-1, 0));
+            }
+
+            if (eventshelper.keycode === 'ArrowRight') {
+                this.shape.acceleration.addTo(new Vector(1, 0));
+            }
+
+            if (eventshelper.keycode === 'ArrowUp') {
+                this.shape.acceleration.addTo(new Vector(0, -1));
+            }
+
+            if (eventshelper.keycode === 'ArrowDown') {
+                this.shape.acceleration.addTo(new Vector(0, 1));
+            }
+		}
 	}
 
-	userAction(key) {
-		if (key === 'ArrowLeft') {
-			this.movementSpeed.addTo(new Vector(-1, 0));
-		}
-
-		if (key === 'ArrowRight') {
-			this.movementSpeed.addTo(new Vector(1, 0));
-		}
-
-		if (key === 'ArrowUp') {
-			this.movementSpeed.addTo(new Vector(0, 1));
-		}
-
-		if (key === 'ArrowDown') {
-			this.movementSpeed.addTo(new Vector(-1, 0));
-		}
+	getInputFieldsConfig() {
+		return {
+			'Rectangle': [
+				// { id: 'speed', label: 'Speed', type: 'number', value: this.getSpeed() },
+				{ id: 'color', label: 'Color', type: 'color', value: this.color },
+				{ id: 'width', label: 'Radius', type: 'number', value: this.radius },
+				// { id: 'mass', label: 'Mass', type: 'number', value: this.mass },
+				// { id: 'width', label: 'Width', type: 'number', value: rocketWidth },
+				{ id: 'positionX', label: 'Position X', type: 'number', value: this.position.getX() },
+				{ id: 'positionY', label: 'Position Y', type: 'number', value: this.position.getY() }
+			]
+		};
 	}
+
+	updateFieldUserInstance(property, value) {
+		console.log(property)
+	}
+
+
+
+
+
+
+
+	//OLD -----------
 
 	intersects(otherShape) {
 		if (otherShape.shape instanceof Ball) {
@@ -132,40 +179,4 @@ class Box extends PolygonShape {
 			}
 		}
 	}
-
-	getInputFieldsConfig(){
-        return {
-            'Box': [
-                // { id: 'speed', label: 'Speed', type: 'number', value: this.getSpeed() },
-                { id: 'color', label: 'Color', type: 'color', value: this.color },
-                { id: 'width', label: 'Radius', type: 'number', value: this.radius },
-                // { id: 'mass', label: 'Mass', type: 'number', value: this.mass },
-                // { id: 'width', label: 'Width', type: 'number', value: rocketWidth },
-                { id: 'positionX', label: 'Position X', type: 'number', value: this.position.getX() },
-                { id: 'positionY', label: 'Position Y', type: 'number', value: this.position.getY() }
-            ]
-        };
-    }
-
-    updateFieldUserInstance(property, value){
-        console.log(property)
-    }
-
-	rotMx(angle){
-		let mx = new Matrix(2,2);
-		mx.data[0][0] = Math.cos(angle);
-		mx.data[0][1] = -Math.sin(angle);
-		mx.data[1][0] = Math.sin(angle);
-		mx.data[1][1] = Math.cos(angle);
-		return mx;
-	}
-
-    getVertices(){
-        this.rotMat = Matrix.rotMx(this.angle);
-        this.dir = this.rotMat.multiplyVec(this.refDir);
-        this.vertex[0] = this.pos.add(this.dir.mult(-this.length/2)).add(this.dir.normal().mult(this.width/2));
-        this.vertex[1] = this.pos.add(this.dir.mult(-this.length/2)).add(this.dir.normal().mult(-this.width/2));
-        this.vertex[2] = this.pos.add(this.dir.mult(this.length/2)).add(this.dir.normal().mult(-this.width/2));
-        this.vertex[3] = this.pos.add(this.dir.mult(this.length/2)).add(this.dir.normal().mult(this.width/2));
-    }
 }

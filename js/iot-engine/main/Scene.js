@@ -7,6 +7,7 @@ class Scene {
         this.inputUserInteractions = null;
         this.worlds = new HashTable();
         this.worldsNew = [];
+        this.physicsComplex = new PhysicsComplex();
     }
 
     createWorld(n) {
@@ -49,6 +50,7 @@ class Scene {
     }
 
     update(deltaTime) {
+        // console.log(canvas.wid);
         this.map.update();
         this.camera.update();
 

@@ -1,10 +1,11 @@
 class Engine {
-    frameCount = 0;
-    fps = 200;
+    fpsHelper = 0;
+    fps = 60;
+
     startTime;
     followShape = false;
     selectedPolygon = undefined;
-    animationRunning = true;
+    paused = true;
     lastShapeUsed = "CIRCLE";
     resetTime = false;
     scalar = 2 * Utils.randomBoolean1orMinus1();
@@ -15,17 +16,20 @@ class Engine {
     mouseDownInitPosition = new Vector(0, 0);
 
     constructor(gameObjectType) {
-        Globals.setBoundaries(true);
+        Globals.setBoundaries(false);
         Globals.setCollisions(true);
         Globals.setDebug(true);
 
         this.setScreen();
         this.objs = [];
-        this.prevTime = 0;
+        this.lastTime = 0;
 
         this.debugger = new Debugger();
-
         this.gameObjectType = gameObjectType;
+
+
+        this.gameLoop = this.gameLoop.bind(this); // Binding the gameLoop to the current instance
+
     }
 
     init() {
@@ -33,50 +37,48 @@ class Engine {
         this.userInteractions();
 
         this.gameObjectType.init();
-        this.starLoop();
 
-        if (Globals.isCollisions()) {
-            this.collisionGrid = new CollisionGrid(canvas.width, canvas.height, 2);
-        }
+
+        this.gameLoop(); // Start the game loop
     }
 
     starLoop() {
-        this.gameLoop();
+        this.gameLoop(); // Start the game loop
     }
 
-    gameLoop(time) {
-        this.calculateFPS();
-
-        if (this.resetTime) {
-            this.prevTime = time; this.resetTime = false;
-        }
-
-        let deltaTime = (time - this.prevTime) * 10;
-        this.prevTime = time;
+    gameLoop(timestamp = 1) {
+        let deltaTime = (timestamp - this.lastTime);
+        this.lastTime = timestamp;
 
         this.update(deltaTime);
         this.draw();
 
-        this.debugger.update();
+        if (this.paused) {
 
-        if (this.animationRunning)
-            requestAnimationFrame(this.gameLoop.bind(this));
+            this.calculateFPS();
+            if (this.resetTime) {
+                this.lastTime = timestamp; this.resetTime = false;
+            }
+
+            requestAnimationFrame(this.gameLoop);
+        }
     }
 
     update(deltaTime) {
-        for (const obj of this.objs) {
-            obj.update(deltaTime);
-        }
-
         this.gameObjectType.update(deltaTime);
+
+        if( this.debugger && Utils.existsMethod( this.debugger.update) ){
+            this.debugger.update();
+        }
     }
 
     draw() {
         if (this.ctxClearScreen) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
+        this.gameObjectType.draw();
 
-        this.addText(`${this.fps}`, 10, 20, 15, "white");
+        this.addText(`${this.fps}`, canvas.width - 85, 20, 14, "black");
         for (let objIntte of this.objs) {
             //objIntte.draw();
 
@@ -85,14 +87,13 @@ class Engine {
             }
         }
 
-        this.gameObjectType.draw();
         // this.debug()
     }
 
     addText(t, x, y, size, color) {
         ctx.fillStyle = color;
-        ctx.font = `bold ${size}px normal`;
-        ctx.fillText(t, x, y);
+        ctx.font = `bold ${size}px Arial`;
+        ctx.fillText("FPS: " + t + ".00", x, y);
     }
 
     setScreen() {
@@ -121,30 +122,30 @@ class Engine {
     }
 
     resumeGameLoopState() {
-        if (this.animationRunning) {
+        if (this.paused) {
             return;
         }
 
         console.log("resumeGameLoopState");
         this.resetTime = true;
-        this.animationRunning = true;
+        this.paused = true;
         this.starLoop();
     }
 
     pauseGameLoopState() {
-        if (!this.animationRunning) {
+        if (!this.paused) {
             return;
         }
 
-        this.animationRunning = false;
+        this.paused = false;
     }
 
     invertGameLoopState() {
-        if (!this.animationRunning) {
+        if (!this.paused) {
             this.resetTime = true;
         }
 
-        this.animationRunning = !this.animationRunning;
+        this.paused = !this.paused;
         this.starLoop();
     }
 
@@ -199,12 +200,13 @@ class Engine {
     }
 
     calculateFPS() {
-        this.frameCount++;
+        this.fpsHelper++;
         const currentTime = performance.now();
+
         if (this.startTime === undefined) this.startTime = currentTime;
         if (currentTime - this.startTime >= 1000) {
-            this.fps = this.frameCount;
-            this.frameCount = 0;
+            this.fps = this.fpsHelper;
+            this.fpsHelper = 0;
             this.startTime = currentTime;
         }
     }

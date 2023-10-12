@@ -13,7 +13,7 @@ class InputUserFieldInteractions {
         this.injectStyles();
         this.createContainer();
 
-        this.createBindUpdate();
+        // this.createBindUpdate();
     }
 
     createBindUpdate() {
