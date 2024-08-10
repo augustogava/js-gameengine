@@ -38,26 +38,26 @@ class Engine {
 
         this.gameObjectType.init();
 
-
-        this.gameLoop(); // Start the game loop
+        this.gameLoop(); 
     }
 
     starLoop() {
-        this.gameLoop(); // Start the game loop
+        requestAnimationFrame(this.gameLoop);
     }
 
     gameLoop(timestamp = 1) {
-        let deltaTime = (timestamp - this.lastTime);
-        this.lastTime = timestamp;
+        if (!this.lastTime) this.lastTime = timestamp;
+        const deltaTime = (timestamp - this.lastTime) * 0.001; // Convert to seconds
 
         this.update(deltaTime);
         this.draw();
+        this.lastTime = timestamp;
 
         if (this.paused) {
 
             this.calculateFPS();
             if (this.resetTime) {
-                this.lastTime = timestamp; this.resetTime = false;
+                this.lastTime = timestamp;
             }
 
             requestAnimationFrame(this.gameLoop);

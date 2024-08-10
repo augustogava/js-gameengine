@@ -13,7 +13,7 @@ class Camera {
     return v;
   }
 
-  update() {
+  update(deltaTime) {
 
   }
 

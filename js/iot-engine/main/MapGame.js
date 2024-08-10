@@ -25,7 +25,8 @@ class MapGame {
     this.load = false;
   }
 
-  update() {
+  update(deltaTime) {
+    // this.fTheta += 1.0 * deltaTime;
 
   }
 
