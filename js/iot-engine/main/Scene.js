@@ -51,12 +51,14 @@ class Scene {
 
     update(deltaTime) {
         // console.log(canvas.wid);
-        this.map.update();
-        this.camera.update();
+        deltaTime = Math.min(deltaTime, 0.1);
+
+        this.map.update(deltaTime);
+        this.camera.update(deltaTime);
 
         for (let c of this.worlds.getAllObjcts()) {
             c.update(deltaTime);
-            c.verifyCollision();
+            c.verifyCollision(deltaTime);
         }
 
         if( eventshelper )

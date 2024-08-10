@@ -2,7 +2,7 @@ class InputUserFieldInteractions {
     constructor(game) {
         this.game = game;
         this.fieldConfigurations = {};
-        this.previousValues = {}; // Store previous values
+        this.previousValues = {};
         this.fieldValues = {};
 
 
@@ -95,7 +95,7 @@ class InputUserFieldInteractions {
         this.dynamicDiv.style.borderRadius = "2px";
         this.dynamicDiv.style.width = "200px";
 
-        this.dynamicDiv.style.zIndex = "9999"; // Ensures it's on top of other elements
+        this.dynamicDiv.style.zIndex = "9999";
 
         // Append it to the body
         document.body.appendChild(this.dynamicDiv);
@@ -159,7 +159,6 @@ class InputUserFieldInteractions {
             const input = document.getElementById(field.id);
             if (input) {
                 input.addEventListener('change', () => {
-                    // Update the fieldValues object with the new value for the changed field
                     this.fieldValues[field.id] = input.value;
 
                     this.handleInputChange(field.id);
@@ -172,7 +171,6 @@ class InputUserFieldInteractions {
         if (changedField) {
             const newValue = this.fieldValues[changedField];
 
-            // Check the field type, and parse as a number if it's a 'number' type
             if (this.isFieldTypeNumber(changedField)) {
                 this.dynamicObject.updateFieldUser(changedField, parseFloat(newValue));
             } else {
