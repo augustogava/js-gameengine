@@ -162,14 +162,24 @@ class Vector {
         return new Vector(this.x, this.y);
     }
 
+    // distance(p1) {
+    //     var dx = this.x - p1.x,
+    //         dy = this.y - p1.y;
+
+    //     return Math.sqrt(dx * dx + dy * dy);
+    // }
 
     distance(p1) {
+        if (!p1 || !(p1 instanceof Vector)) {
+            console.error("Invalid parameter passed to distance method.");
+            return 0;
+        }
         var dx = this.x - p1.x,
             dy = this.y - p1.y;
-
+    
         return Math.sqrt(dx * dx + dy * dy);
     }
-
+    
     angle(other) {
         return Math.atan2(other.y - this.y, other.x - this.x);
     }

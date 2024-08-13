@@ -8,11 +8,12 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-
 <body class="game-background">
     <canvas id="gameCanvas"></canvas>
 
     <!-- <div id="debugArea"></div> -->
+    <script src="js/iot-engine/interactions/interactionSettings.js"></script>
+    <script src="js/iot-engine/interactions/Interections.js"></script>
 
     <script src="js/iot-engine/world-management/Fixture.js"></script>
 
@@ -56,32 +57,37 @@
     <script src="js/iot-engine/main/MapGame.js"></script>
     <script src="js/iot-engine/main/World.js"></script>
     <script src="js/iot-engine/main/Scene.js"></script>
-    <script src="js/iot-engine/interactions/interactionSettings.js"></script>
-    <script src="js/iot-engine/interactions/Interections.js"></script>
-    
+
     <script src="js/iot-engine/interactions/InputUserFieldInteractions.js"></script>
 
     <script src="js/Ball.js"></script>
     <script src="games/RocketFakeGameImp.js"></script>
 
     <script src="js/iot-engine/Engine.js"></script>
-
     <script>
-        const canvas = undefined;
-        const ctx = undefined;
-
+        let canvas = undefined;
+        let ctx = undefined;
+    
         let game = undefined;
         let eventshelper = undefined;
-
-        window.onload = async function () {
+    
+        window.onload = function () {
             canvas = document.getElementById("gameCanvas");
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            
             ctx = canvas.getContext("2d");
 
-            eventshelper = new Interections();
+            // Function to resize canvas to full screen
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
 
+            // Initial resize
+            resizeCanvas();
+
+            // Resize canvas whenever the window is resized
+            window.addEventListener('resize', resizeCanvas);
+
+            eventshelper = new Interactions(canvas);
             game = new Engine(new RocketFakeGameImp());
             game.init();
         };

@@ -31,12 +31,11 @@ class InputUserFieldInteractions {
                 position: absolute;
                 top: 10px;
                 left: 10px;
-                // background-color: rgba(5, 255, 255, 0.8);
                 padding-left: 8px;
                 z-index: 1000;
 
-                padding: 1.5rem 2rem; /* Adjusted padding */
-                border-radius: 8px; /* Slightly reduced border-radius */
+                padding: 1.5rem 2rem; 
+                border-radius: 8px;
             }
             
             h2 {
@@ -52,17 +51,17 @@ class InputUserFieldInteractions {
             
             label {
                 display: block;
-                margin-bottom: 5px; /* Adjusted margin */
-                margin-top: 5px; /* Adjusted margin */
+                margin-bottom: 5px; 
+                margin-top: 5px; 
                 font-size: 12px;
                 color: #fff;
             }
             
             input {
-                padding: 0.1rem 0.3rem; /* Adjusted padding */
-                font-size: 11px; /* Reduced font size */
+                padding: 0.1rem 0.3rem;
+                font-size: 11px;
                 border: 1px solid #ccc;
-                border-radius: 4px; /* Slightly reduced border-radius */
+                border-radius: 4px;
                 transition: border-color 0.3s ease;
                 margin-bottom:3px;
             }

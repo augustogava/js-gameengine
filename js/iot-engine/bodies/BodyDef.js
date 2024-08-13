@@ -184,13 +184,12 @@ class BodyDef {
     }
 
     isDragging() {
-        // console.log(this.rocketFake.selectedBody )
         if (!this.isSelected()) {
             return false;
         }
-
-        return eventshelper.mousePressingDown();
+        return eventshelper.mousePressingDown(); 
     }
+    
 
     applyPhysics(g) {
         if (!this.physics /*|| !this.worldStuffEnabled */) {

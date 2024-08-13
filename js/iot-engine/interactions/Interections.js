@@ -17,7 +17,7 @@ class Interactions {
         this.canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e), false);
         this.canvas.addEventListener('mousedown', (e) => this.handleMouseDown(e), false);
         this.canvas.addEventListener('mouseup', (e) => this.handleMouseUp(e), false);
-        this.canvas.addEventListener('mouseleave', () => this.handleMouseLeave(e), false);
+        this.canvas.addEventListener('mouseleave', (e) => this.handleMouseLeave(e), false);
         this.canvas.addEventListener('mouseenter', (e) => this.handleMouseEnter(e), false);
         this.canvas.addEventListener('wheel', (e) => this.handleMouseWheel(e), false);
         document.addEventListener('keydown', (e) => this.handleKeyDown(e), false);
@@ -56,14 +56,12 @@ class Interactions {
 
     handleMouseUp(event) {
         this.mouseDown = false;
-        this.mousePressed = false;
         this.activeMode = null; 
     }
 
     handleMouseLeave(event) {
         this.mouseInside = false;
         this.mouseDown = false;
-        this.mousePressed = false;
         this.activeMode = null; 
     }
 
@@ -98,6 +96,19 @@ class Interactions {
         }
     }
 
+    mousePressingDown() {
+        return this.mouseDown;
+    }
+
+    // Re-add these methods to ensure all functionalities are retained
+    mouseClickDown() {
+        return this.mousePressed;
+    }
+
+    mouseRelease() {
+        return !this.mouseDown && this.mousePressed;
+    }
+
     getState() {
         return {
             mousePos: this.mousePos,
@@ -113,6 +124,7 @@ class Interactions {
 
     resetLoop() {
         this.lastMousePos = { ...this.mousePos };
+        this.mousePressed = false; // Ensure mousePressed resets each loop
         this.scrollDelta = 0; 
     }
 }
