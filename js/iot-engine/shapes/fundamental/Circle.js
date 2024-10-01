@@ -21,4 +21,17 @@ class Circle extends BasicForms {
         ctx.fill();
         ctx.closePath();
     }
+
+    debug() {
+        ctx.fillStyle = "black";
+        ctx.font = "14px Arial bold";
+        ctx.textAlign = "left";
+        ctx.textBaseline = "top";
+
+        ctx.fillText("Direct X: " + this.position.getX() + " y: " + this.position.getY(), this.position.getX() - 70, this.position.getY() - this.radius - 30);
+
+        // ctx.fillText("Accele:" + this.acceleration.getLength() + " | Thottle:" + this.rocketFake.throttle + " Force:" + this.forceCalculated, this.position.getX() - 50, this.position.getY() - this.radius - 30);
+        ctx.closePath();
+    }
+
 }

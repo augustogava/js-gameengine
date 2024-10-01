@@ -85,7 +85,6 @@ class SHash {
 let damping = 0.001;
 let cellhalf = cellsize * 0.5;
 
-// We'll assume the ... equivalent values from Lua are passed in as an array in JavaScript
 function processChunks(data) {
   let input = data[0];
   let output = data[1];
@@ -111,7 +110,7 @@ function processChunks(data) {
   let tmpy = 0;
   let tmpa = 0;
 
-  while (active) {  // Ensure `active` is defined globally or passed into this function
+  while (active) {
     obj_count = input.demand();
 
     for (let ci = 0; ci < chunkcount; ci++) {

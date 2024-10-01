@@ -1,7 +1,10 @@
-class RocketFakeGameImp extends Scene {
+class GameSimpleBalls extends Scene {
     constructor() {
-        super(RocketFakeGameImp);
+        super(GameSimpleBalls);
         Globals.setInputInteractions(true);
+        Globals.setBoundaries(true);
+        Globals.setDebug(true);
+
         this.selectedBody = null;
 
         this.createWorld('main');
@@ -13,19 +16,19 @@ class RocketFakeGameImp extends Scene {
     }
 
     init() {
-        // Initialization code here, if needed
+
     }
 
     addObjects() {
-        for (let i = 0; i < 1; i++) {
-            let x0 = Utils.randomInt(100, canvas.clientWidth - 100);
-            let y0 = Utils.randomInt(100, canvas.clientHeight - 100);
+        for (let i = 0; i < 40; i++) {
+            let x0 = Utils.randomInt(50, canvas.clientWidth - 50);
+            let y0 = Utils.randomInt(50, canvas.clientHeight - 50);
             let x1 = x0 + Utils.randomInt(-0, 50);
             let y1 = y0 + Utils.randomInt(-0, 50);
-            let w = Utils.randomInt(100, 130);
-            let m = Utils.randomInt(1, 30);
+            let w = Utils.randomInt(1, 25);
+            let m = Utils.randomInt(1, 100);
 
-            var obj = new Ball(this, 1, 50, new Vector(200 + (i * 200), 200 + (i * 200)));
+            var obj = new Ball(this, m, w, new Vector(x0, y0));
 
             var fixPol2 = new Fixture(obj, 1);
             obj.addFixture(fixPol2);

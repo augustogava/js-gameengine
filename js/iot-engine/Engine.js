@@ -73,7 +73,6 @@ class Engine {
         const interactionState = this.interactions.getState();
 
         if (interactionState.mousePressed) {
-            // Update object states based on interactions
             this.handleUserInteraction(interactionState);
         }
 
@@ -81,8 +80,6 @@ class Engine {
     }
 
     handleUserInteraction(interactionState) {
-        // Implement specific handling logic here
-        // Example: rotate, scale, move objects
     }
 
     draw() {

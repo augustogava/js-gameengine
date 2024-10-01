@@ -21,22 +21,16 @@ class Debugger {
     }
 
     htmlBuilder() {
-        // Try to fetch the debug div
         this.debugDiv = document.getElementById("debugArea");
         
-        // Check if the debugDiv exists
         if (!this.debugDiv) {
-          // Create a new div for debugging
           this.debugDiv = document.createElement("canvas");
           this.debugDiv.id = "debugArea";
     
-          // Get the canvas
           const canvas = document.querySelector('canvas');
           if (canvas) {
-            // Insert the debugDiv after the canvas
             canvas.insertAdjacentElement('afterend', this.debugDiv);
           } else {
-            // If there's no canvas, just append the debugDiv to the body
             document.body.appendChild(this.debugDiv);
           }
         }

@@ -58,7 +58,6 @@ class ParticleNoiseObj extends ObjectMain {
                 this.position.setY(0);
             }
     
-            // FlowField logic
             if (x < 0 || x >= this.flow.cols || y < 0 || y >= this.flow.rows) {
                 return;
             }
@@ -102,7 +101,6 @@ class ParticleNoiseObj extends ObjectMain {
         ctx.moveTo(pos.getX(), pos.getY());
     
         for (let i = 0; i < this.history.length; i++) {
-            // Change color dynamically based on position or time
             let r = Math.floor(150 + 100 * Math.sin(i * 0.1));
             let g = Math.floor(150 + 100 * Math.cos(i * 0.1));
             let b = Math.floor(150 + 100 * Math.sin(i * 0.2));

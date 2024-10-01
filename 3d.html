@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Engine</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="game-background">
+    <canvas id="gameCanvas"></canvas>
+
+    <script src="js/iot-engine/interactions/interactionSettings.js"></script>
+    <script src="js/iot-engine/interactions/Interections.js"></script>
+
+    <script src="js/3d-engine/core/bodies.js"></script>
+    <script src="js/3d-engine/helpers/obj-importer.js"></script>
+    <script src="js/3d-engine/ShapeEngine.js"></script>
+
+    <script>
+        window.onload = async function () {
+            const canvas = document.getElementById("gameCanvas");
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const shapeEngine = new ShapeEngine(canvas, 'js/3d-engine/objects/teapot.obj', new vec3d(0, 0, 0), new vec3d(100, 100, 0));
+            await shapeEngine.initialize();
+            shapeEngine.start();
+        };
+    </script>
+</body>
+
+</html>

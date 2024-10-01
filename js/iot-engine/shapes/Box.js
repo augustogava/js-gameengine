@@ -92,17 +92,15 @@ class Box extends BodyDef {
 	//OLD -----------
 
 	intersects(otherShape) {
-		if (otherShape.shape instanceof Ball) {
-			// return false;
+		if (otherShape.shape instanceof Circle) {
 			return this.collidesWithCircle(otherShape);
 		} else if (otherShape.shape instanceof PolygonShape) {
-			// return false;
 			return this.shape.resolveCollisionWithPolygon(otherShape);
 		}
 	}
 
 	resolveCollision(otherShape) {
-		if (otherShape.shape instanceof Ball) {
+		if (otherShape.shape instanceof Circle) {
 			return false;
 			// return this.shape.resolveCollisionWithCircle(otherShape);
 		} else if (otherShape.shape instanceof PolygonShape) {

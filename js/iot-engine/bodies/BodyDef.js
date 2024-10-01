@@ -1,8 +1,7 @@
-
 const bodyType = new HashTable();
-bodyType.set('static', { mass: 0, velocity: 0, moved: 0 });
-bodyType.set('dynamic', { mass: 0, velocity: 1, moved: 1 });
-bodyType.set('kinematic', { mass: 1, velocity: 1, moved: 1 });
+bodyType.set('static', {mass: 0, velocity: 0, moved: 0});
+bodyType.set('dynamic', {mass: 0, velocity: 1, moved: 1});
+bodyType.set('kinematic', {mass: 1, velocity: 1, moved: 1});
 
 class BodyDefType {
     constructor(bodyTypeP) {
@@ -38,10 +37,10 @@ class BodyDefType {
 
 class BodyDef {
     constructor(instance, mass, position, speed, direction) {
-        this.physics = null;
 
         this.id = Utils.randomIntFromInterval(1, 5000);
         this.currentTime = Date.now();
+        this.physics = new Physics(this);
 
         this.mass = mass ? mass : 1;
         this.invMass = (this.mass === 0) ? 0 : (1 / this.mass);
@@ -53,7 +52,7 @@ class BodyDef {
         this.colorOriginal = "rgba(0,0,0, 1)";
         this.colorUserSelected = "red";
 
-        this.color = this.colorOriginal;''
+        this.color = this.colorOriginal;
         this.colorProjection = Utils.changeRedSoftness(this.color, 200);
         this.colorShadow = Utils.changeRedSoftness(this.color, 0);
 
@@ -91,7 +90,6 @@ class BodyDef {
         if (direction)
             this.velocity.setAngle(direction);
 
-
         this.worldStuffEnabled = true;
     }
 
@@ -107,7 +105,7 @@ class BodyDef {
         }
 
         if (Globals.getBoundaries()) {
-            this.updateConstraints();
+            this.updateConstraintsStep();
         }
 
         if (typeof this.updatecamerabox === "function") {
@@ -128,8 +126,18 @@ class BodyDef {
         if (this.shape && Utils.existsMethod(this.shape.draw)) {
             this.shape.draw();
         }
+
         if (Utils.existsMethod(this.draw)) {
             this.draw();
+        }
+
+        if (Globals.isDebug() ) {
+            if( Utils.existsMethod(this.debug) ){
+                this.debug();
+            }
+            if( Utils.existsMethod(this.shape.debug) ){
+                this.shape.debug();
+            }
         }
     }
 
@@ -187,9 +195,13 @@ class BodyDef {
         if (!this.isSelected()) {
             return false;
         }
-        return eventshelper.mousePressingDown(); 
+        return eventshelper.mousePressingDown();
     }
-    
+
+    applyForce(force) {
+        let forceAcc = force.divide(this.mass);  // Force applied based on mass
+        this.acceleration.addTo(forceAcc);
+    }
 
     applyPhysics(g) {
         if (!this.physics /*|| !this.worldStuffEnabled */) {
@@ -217,33 +229,9 @@ class BodyDef {
         }
     }
 
-    updateConstraints() {
-        if (this.position.y + this.radius >= canvas.height) {
-            this.position.y = canvas.height - this.radius;
-            this.velocity.y = this.velocity.y * -1;
-
-            this.velocity.multiplyBy(this.elasticity);
-        }
-
-        if (this.position.y - this.radius <= 0) {
-            this.position.y = this.radius;
-            this.velocity.y = this.velocity.y * -1;
-
-            this.velocity.multiplyBy(this.elasticity);
-        }
-
-        if (this.position.x + this.radius >= canvas.width) {
-            this.position.x = canvas.width - this.radius;
-            this.velocity.x = this.velocity.x * -1;
-
-            this.velocity.multiplyBy(this.elasticity);
-        }
-
-        if (this.position.x - this.radius <= 0) {
-            this.position.x = 0 + this.radius;
-            this.velocity.x = this.velocity.x * -1;
-
-            this.velocity.multiplyBy(this.elasticity);
+    updateConstraintsStep() {
+        if (Utils.existsMethod(this.updateConstraints)) {
+            this.updateConstraints();
         }
     }
 
@@ -273,12 +261,12 @@ class BodyDef {
         if (this.isSelected()) {
             this.color = this.colorUserSelected;
 
-            ctx.fillStyle = this.colorUserSelected;// 'rgba(44, 100, 10, 1)'; // Change color for selected polygon
-            ctx.strokeStyle = this.colorUserSelected;//// Change color for selected polygon
+            ctx.fillStyle = this.colorUserSelected;
+            ctx.strokeStyle = this.colorUserSelected;
         } else {
             this.color = this.colorOriginal;
 
-            ctx.fillStyle = this.colorOriginal;// 'rgba(44, 100, 10, 1)'; // Change color for selected polygon
+            ctx.fillStyle = this.colorOriginal;
             ctx.strokeStyle = this.colorOriginal;
         }
     }

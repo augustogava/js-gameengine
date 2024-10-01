@@ -90,27 +90,27 @@ class Vector {
     }
 
     getLength() {
-        return Math.sqrt(this.dot(this));
+        return Math.sqrt(this.x * this.x + this.y * this.y);
     }
 
     length() {
         return this.getLength();
     }
 
-    add(v2) {
-        return new Vector(this.x + v2.getX(), this.y + v2.getY());
+    subtract(v) {
+        return new Vector(this.x - v.x, this.y - v.y);
     }
 
-    subtract(v2) {
-        return new Vector(this.x - v2.getX(), this.y - v2.getY());
+    add(v) {
+        return new Vector(this.x + v.x, this.y + v.y);
     }
 
     multiply(val) {
         return new Vector(this.x * val, this.y * val);
     }
 
-    divide(val) {
-        return new Vector(this.x / val, this.y / val);
+    divide(scalar) {
+        return new Vector(this.x / scalar, this.y / scalar);
     }
 
     addTo(v2) {
@@ -127,11 +127,8 @@ class Vector {
         return this;
     }
 
-    multiplyBy(val) {
-        this.x *= val;
-        this.y *= val;
-
-        return this;
+    multiplyBy(scalar) {
+        return new Vector(this.x * scalar, this.y * scalar);
     }
 
     multiplyByVector(v) {
@@ -208,8 +205,9 @@ class Vector {
         return new Vector(this.x*n, this.y*n);
     }
 
-    normal(){
-        return new Vector(-this.y, this.x).unit();
+    normalize() {
+        let length = this.getLength();
+        return new Vector(this.x / length, this.y / length);
     }
 
     drawVec(start_x, start_y, n, color){
