@@ -98,14 +98,13 @@ class BodyDef {
     }
 
     step(d) {
+        this.verifyActions();
+
+
         if (Utils.existsMethod(this.update)) {
             this.update(d)
-        } else if (this.shape && Utils.existsMethod(this.shapeupdate)) {
+        } else if (this.shape && Utils.existsMethod(this.shape.update)) {
             this.shape.update(d)
-        }
-
-        if (Globals.getBoundaries()) {
-            this.updateConstraintsStep();
         }
 
         if (typeof this.updatecamerabox === "function") {
@@ -116,7 +115,9 @@ class BodyDef {
             obj.attract();
         }
 
-        this.verifyActions();
+        if (Globals.getBoundaries()) {
+            this.updateConstraintsStep();
+        }
 
     }
 
@@ -131,12 +132,16 @@ class BodyDef {
             this.draw();
         }
 
-        if (Globals.isDebug() ) {
-            if( Utils.existsMethod(this.debug) ){
-                this.debug();
+        if (Globals.isDebug()) {
+            if (Utils.existsMethod(this.debug)) {
+                // this.debug();
             }
-            if( Utils.existsMethod(this.shape.debug) ){
+            if (Utils.existsMethod(this.shape.debug)) {
                 this.shape.debug();
+            }
+
+            if (Utils.existsMethod(this.shape.display)) {
+                this.shape.display();
             }
         }
     }
@@ -199,7 +204,7 @@ class BodyDef {
     }
 
     applyForce(force) {
-        let forceAcc = force.divide(this.mass);  // Force applied based on mass
+        let forceAcc = force.divide(this.mass);
         this.acceleration.addTo(forceAcc);
     }
 

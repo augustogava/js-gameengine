@@ -12,6 +12,7 @@ class Ball extends BodyDef {
         this.bounce = 0;
         this.friction = 0.99;
         this.elasticity = 0.85;
+        this.mu = 0.1;
 
         this.velocity = new Vector(0, 0);
         this.acceleration = new Vector(0, 0);
@@ -21,10 +22,9 @@ class Ball extends BodyDef {
     }
 
     update(deltaTime) {
-        let gravity = new Vector(0, 0.55);  // Gravity acceleration
-        this.acceleration.addTo(gravity);  // Apply gravity directly to acceleration
+        let gravity = new Vector(0, 0.55);
+        this.acceleration.addTo(gravity);
 
-        // Apply friction if near the ground
         this.physics.applyFriction(this.friction);
 
         this.reposition();
@@ -41,6 +41,9 @@ class Ball extends BodyDef {
     draw() {
         if (this.shape && this.shape.position instanceof Vector) {
             this.shape.draw();
+
+            this.shape.position.drawVec(null, null, 4, `black`);
+
         } else {
             console.error("Shape or shape position is invalid.");
         }
@@ -114,8 +117,9 @@ class Ball extends BodyDef {
         }
 
         if (eventshelper.mouseClickDown()) {
-            this.initBoost();
-
+            // let wind = createVector(0.1, 0);
+            // drawVector(wind, mover.pos.x, mover.pos.y, color(0, 0, 255), 100);
+            // mover.applyForce(wind, color(0, 0, 255));
         }
 
         if (eventshelper.mouseRelease()) {
@@ -160,78 +164,110 @@ class Ball extends BodyDef {
     updateConstraints() {
         if ((this.shape.position.y + this.shape.radius) > canvas.height) {
             this.shape.position.y = canvas.height - this.shape.radius;
-            this.velocity.y = -Math.abs(this.velocity.y);
+            this.velocity.y *= -1;
 
             this.velocity.multiplyBy(this.elasticity);
         }
 
         if (this.shape.position.y - this.shape.radius < 0) {
             this.shape.position.y = this.shape.radius;
-            this.velocity.y = Math.abs(this.velocity.y);
+            this.velocity.y *= -1;
 
             this.velocity.multiplyBy(this.elasticity);
         }
 
-        if (this.shape.position.x + this.shape.radius > canvas.width) {
+        if (this.shape.position.x >= canvas.width - this.shape.radius) {
             this.shape.position.x = canvas.width - this.shape.radius;
-            this.velocity.x = -Math.abs(this.velocity.x);
-
-            this.velocity.multiplyBy(this.elasticity);
+            this.velocity.x *= -1;
+        } else if (this.shape.position.x <= this.shape.radius) {
+            this.shape.position.x = this.shape.radius;
+            this.velocity.x *= -1;
         }
+        //
+        // if (this.shape.position.x + this.shape.radius > canvas.width) {
+        //     this.shape.position.x = canvas.width - this.shape.radius;
+        //     this.velocity.x = -Math.abs(this.velocity.x);
+        //
+        //     this.velocity.multiplyBy(this.elasticity);
+        // }
+        //
+        // if (this.shape.position.x - this.shape.radius < 0) {
+        //     this.shape.position.x = this.radius;
+        //     this.velocity.x = Math.abs(this.velocity.x);
+        //
+        //     this.velocity.multiplyBy(this.elasticity);
+        // }
+    }
 
-        if (this.shape.position.x - this.shape.radius < 0) {
-            this.shape.position.x = this.radius;
-            this.velocity.x = Math.abs(this.velocity.x);
-
-            this.velocity.multiplyBy(this.elasticity);
+    intersects(otherShape) {
+        if (otherShape.shape instanceof Circle) {
+            return this.collidesWithCircle(otherShape);
+        } else if (otherShape instanceof Ground) {
+            return this.collidesWithGround(otherShape);
         }
     }
 
-    intersects(otherBall) {
-        let distanceBetweenCenters = this.shape.position.distance(otherBall.shape.position);
-        let sumOfRadii = this.shape.radius + otherBall.shape.radius;
+    collidesWithCircle(otherShape) {
+        let distanceBetweenCenters = this.shape.position.distance(otherShape.shape.position);
+        let sumOfRadii = this.shape.radius + otherShape.shape.radius;
 
-        return distanceBetweenCenters < sumOfRadii;  // True if circles are overlapping
-
+        return distanceBetweenCenters < sumOfRadii;
     }
-    resolveCollision(otherBall) {
-        let normal = this.shape.position.subtract(otherBall.shape.position);  // Vector from other ball to this ball
+
+    collidesWithGround(ground) {
+        if (ground.below(this.shape.position, this.shape.radius)) {
+            let diff = ground.below(this.shape.position, this.shape.radius);
+            return diff > -1;
+        }
+    }
+
+    resolveCollision(otherShape) {
+        if (otherShape.shape instanceof Circle) {
+            return this.resolveCollisionWithCircle(otherShape);
+        } else if (otherShape instanceof Ground) {
+            return this.resolveCollisionWithGround(otherShape);
+        }
+    }
+
+    resolveCollisionWithCircle(otherShape) {
+        let normal = this.shape.position.subtract(otherShape.shape.position);
         let distance = normal.getLength();
 
-        // If the circles are overlapping
-        if (distance < this.shape.radius + otherBall.shape.radius) {
-            // Calculate the overlap distance
-            let overlap = (this.shape.radius + otherBall.shape.radius) - distance;
+        if (distance < this.shape.radius + otherShape.shape.radius) {
+            let overlap = (this.shape.radius + otherShape.shape.radius) - distance;
 
-            // Normalize the normal vector
             normal = normal.divide(distance);
 
-            // Separate the circles by the overlap distance
-            let correction = normal.multiplyBy(overlap / (this.inv_m + otherBall.inv_m) * 0.5);  // Split the correction proportionally based on masses
+            let correction = normal.multiplyBy(overlap / (this.inv_m + otherShape.inv_m) * 0.5);
 
-            // Correct the positions of both balls
             this.shape.position = this.shape.position.add(correction.multiplyBy(this.inv_m));
-            otherBall.shape.position = otherBall.shape.position.subtract(correction.multiplyBy(otherBall.inv_m));
+            otherShape.shape.position = otherShape.shape.position.subtract(correction.multiplyBy(otherShape.inv_m));
 
-            // Calculate relative velocity
-            let relativeVelocity = this.velocity.subtract(otherBall.velocity);
+            let relativeVelocity = this.velocity.subtract(otherShape.velocity);
             let velocityAlongNormal = relativeVelocity.dot(normal);
 
-            // Do not resolve if the circles are moving apart
             if (velocityAlongNormal > 0) return;
 
-            // Calculate restitution (elasticity)
-            let restitution = Math.min(this.elasticity, otherBall.elasticity);
+            let restitution = Math.min(this.elasticity, otherShape.elasticity);
 
-            // Calculate the impulse scalar
             let impulseMagnitude = -(1 + restitution) * velocityAlongNormal;
-            impulseMagnitude /= (this.inv_m + otherBall.inv_m);
+            impulseMagnitude /= (this.inv_m + otherShape.inv_m);
 
-            // Apply impulse to both balls
             let impulse = normal.multiplyBy(impulseMagnitude);
             this.velocity = this.velocity.add(impulse.multiplyBy(this.inv_m));
-            otherBall.velocity = otherBall.velocity.subtract(impulse.multiplyBy(otherBall.inv_m));
+            otherShape.velocity = otherShape.velocity.subtract(impulse.multiplyBy(otherShape.inv_m));
         }
+    }
+
+    resolveCollisionWithGround(ground) {
+        let friction = this.velocity.clone();
+        friction = friction.normalize();
+        friction = friction.mult(-1);
+        friction = friction.rotate(-ground.angle);
+
+        let normal = this.mass;
+        friction.setMag(this.mu * normal);
+        this.applyForce(friction);
     }
 
 }

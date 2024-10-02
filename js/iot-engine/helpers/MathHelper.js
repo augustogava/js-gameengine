@@ -3,6 +3,11 @@ class MathHelper {
         return (maxV - (initV)) / (max - init) * (finder - init) + (initV);
     }
 
+    static lerp(a, b, t) {
+        return a + (b - a) * t;
+    }
+
+
     static length(v) {
         return Math.sqrt(v.x * v.x + v.y * v.y);
     }

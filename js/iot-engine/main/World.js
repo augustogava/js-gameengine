@@ -6,17 +6,17 @@ class World {
 
         this.physicsWorld = new PhysicsEngine(this);
         this.physicsComplex = new PhysicsComplex();
-        this.physicsWorld.addForce("friction", {
-            name: "friction",
-            type: 2,
-            value: 0.98
-        });
+        // this.physicsWorld.addForce("friction", {
+        //     name: "friction",
+        //     type: 2,
+        //     value: 0.98
+        // });
 
-        this.physicsWorld.addForce("gravity", {
-            name: "gravity",
-            type: 1,
-            value: new Vector(0, 0.55)
-        });
+        // this.physicsWorld.addForce("gravity", {
+        //     name: "gravity",
+        //     type: 1,
+        //     value: new Vector(0, 0.55)
+        // });
     }
 
     addObject(obj) {

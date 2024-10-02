@@ -1,48 +1,25 @@
 class Physics {
     constructor(obj) {
         this.obj = obj;
-        this.mass = obj.mass;  // Get the mass from the object
-        this.acceleration = new Vector(0, 0);  // Object's current acceleration
+        this.mass = obj.mass;
+        this.acceleration = new Vector(0, 0);
     }
 
     applyForce(force) {
         const forceAcc = force.divide(this.mass);
-        this.acceleration.addTo(forceAcc);
-    }
-
-    applyForceCalculated(forces) {
-        if (!forces) return;
-
-        for (let force of forces) {
-            // Check for gravity force (type 1) or friction/damping force (type 2)
-            if (force.type == 1) {
-                if (this.obj.shape && this.obj.shape.velocity) {
-                    this.obj.shape.velocity.addTo(force.value);  // Apply gravity
-                } else {
-                    this.obj.velocity.addTo(force.value);  // Apply gravity
-                }
-            } else if (force.type == 2) {
-                if (this.obj.shape && this.obj.shape.velocity) {
-                    this.obj.shape.velocity.multiplyBy(force.value);  // Apply friction
-                } else {
-                    this.obj.velocity.multiplyBy(force.value);  // Apply friction
-                }
-            }
-        }
+        this.obj.acceleration.addTo(forceAcc);
     }
 
     applyFriction(mu) {
         let diff = canvas.height - (this.obj.shape.position.y + this.obj.shape.radius);
-        if (diff < 1) {  // Object is touching or very close to the ground
+        if (diff < 1) {
             let friction = this.obj.velocity.clone();
-            friction.normalize();  // Get the direction of velocity
-            friction.multiplyBy(-1);  // Reverse the direction (friction opposes motion)
+            friction = friction.normalize();
+            friction= friction.multiplyBy(-1);
 
-            // Magnitude of friction = μ * normal force (normal force is the object's weight)
-            let normal = this.mass;  // The normal force is equal to the mass in this case
-            friction.setLength(mu * normal);  // Friction force = μ * normal force
+            let normal = this.mass;
+            friction.setLength(mu * normal);
 
-            // Apply friction as a force
             this.applyForce(friction);
         }
     }

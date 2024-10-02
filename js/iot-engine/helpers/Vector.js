@@ -13,11 +13,11 @@ class Vector {
     }
 
     isEmpty() {
-        return (this.getX() == 0 && this.getY() == 0);
+        return (this.x == 0 && this.y == 0);
     }
 
     isNull() {
-        return (this.getX() == null || this.getY() == null);
+        return (this.x == null || this.y == null);
     }
 
     normalize() {
@@ -27,6 +27,15 @@ class Vector {
 
         return new Vector(this.x / length, this.y / length);
     }
+
+    // normalize() {
+    //     return this.setMag(1);  // This now uses the setMag function
+    // }
+
+    // normalize() {
+    //     let length = this.getLength();
+    //     return new Vector(this.x / length, this.y / length);
+    // }
 
     dot(v) {
         return this.x * v.x + this.y * v.y;
@@ -73,6 +82,10 @@ class Vector {
         return new Vector(Math.cos(angle), Math.sin(angle));
     }
 
+    headingRadiasn() {
+        return Math.atan2(this.y, this.x);
+    }
+
     getHeading(other) {
         return new Vector(Math.cos(other), Math.sin(other));
     }
@@ -105,6 +118,13 @@ class Vector {
         return new Vector(this.x + v.x, this.y + v.y);
     }
 
+    mult(scalar) {
+        this.x *= scalar;
+        this.y *= scalar;
+
+        return this;
+    }
+
     multiply(val) {
         return new Vector(this.x * val, this.y * val);
     }
@@ -114,15 +134,15 @@ class Vector {
     }
 
     addTo(v2) {
-        this.x += v2.getX();
-        this.y += v2.getY();
+        this.x += v2.x;
+        this.y += v2.y;
 
         return this;
     }
 
     subtractFrom(v2) {
-        this.x -= v2.getX();
-        this.y -= v2.getY();
+        this.x -= v2.x;
+        this.y -= v2.y;
 
         return this;
     }
@@ -134,7 +154,7 @@ class Vector {
     multiplyByVector(v) {
         var x = this.x * v.x;
         var y = this.y * v.y;
-        
+
         return new Vector(x, y);
     }
 
@@ -173,10 +193,10 @@ class Vector {
         }
         var dx = this.x - p1.x,
             dy = this.y - p1.y;
-    
+
         return Math.sqrt(dx * dx + dy * dy);
     }
-    
+
     angle(other) {
         return Math.atan2(other.y - this.y, other.x - this.x);
     }
@@ -201,13 +221,20 @@ class Vector {
         return Math.sqrt(this.x**2 + this.y**2);
     }
 
-    mult(n){
-        return new Vector(this.x*n, this.y*n);
+    setMag(mag) {
+        let currentMag = this.getLength();
+        if (currentMag !== 0) {
+            this.x = (this.x / currentMag) * mag;
+            this.y = (this.y / currentMag) * mag;
+        } else {
+            this.x = mag;
+            this.y = 0;
+        }
+        return this;
     }
 
-    normalize() {
-        let length = this.getLength();
-        return new Vector(this.x / length, this.y / length);
+    mult(n){
+        return new Vector(this.x*n, this.y*n);
     }
 
     drawVec(start_x, start_y, n, color){
@@ -218,4 +245,35 @@ class Vector {
         ctx.stroke();
         ctx.closePath();
     }
+
+    drawVec(start_x, start_y, n, color, arrowsize = 4) {
+        start_x = start_x == undefined ? this.x : start_x;
+        start_y = start_y == undefined ? this.y : start_y;
+        ctx.beginPath();
+        ctx.moveTo(start_x, start_y);
+
+        let end_x = start_x + this.x * n;
+        let end_y = start_y + this.y * n;
+        ctx.lineTo(end_x, end_y);
+
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 3;
+
+        ctx.stroke();
+
+        let angle = Math.atan2(this.y, this.x);
+        ctx.moveTo(end_x, end_y);
+        ctx.lineTo(end_x - arrowsize * Math.cos(angle - Math.PI / 6), end_y - arrowsize * Math.sin(angle - Math.PI / 6));
+        ctx.moveTo(end_x, end_y);
+        ctx.lineTo(end_x - arrowsize * Math.cos(angle + Math.PI / 6), end_y - arrowsize * Math.sin(angle + Math.PI / 6));
+
+        ctx.stroke();
+        ctx.closePath();
+    }
+
+    lerp(a, b, t) {
+        return a + (b - a) * t;
+    }
+
+
 }

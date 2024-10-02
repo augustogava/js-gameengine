@@ -22,6 +22,33 @@ class Circle extends BasicForms {
         ctx.closePath();
     }
 
+    // function drawVector(v, x, y, col, factor = 1) {
+    //     ctx.save();
+    //     let arrowsize = 4;
+    //
+    //     ctx.translate(x, y);
+    //     ctx.strokeStyle = col;
+    //
+    //     let angle = Math.atan2(v.y, v.x);
+    //     ctx.rotate(angle);
+    //
+    //     let len = v.mag() * factor;
+    //
+    //     ctx.beginPath();
+    //     ctx.moveTo(0, 0);
+    //     ctx.lineTo(len, 0);
+    //     ctx.stroke();
+    //
+    //     ctx.beginPath();
+    //     ctx.moveTo(len, 0);
+    //     ctx.lineTo(len - arrowsize, arrowsize / 2);
+    //     ctx.moveTo(len, 0);
+    //     ctx.lineTo(len - arrowsize, -arrowsize / 2);
+    //     ctx.stroke();
+    //
+    //     ctx.restore();
+    // }
+
     debug() {
         ctx.fillStyle = "black";
         ctx.font = "14px Arial bold";

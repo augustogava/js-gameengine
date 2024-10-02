@@ -12,31 +12,36 @@ class GameSimpleBalls extends Scene {
         this.createCamera();
         this.createUserInteractions();
 
-        this.addObjects();
     }
 
     init() {
-
+        this.addObjects();
     }
 
     addObjects() {
-        for (let i = 0; i < 40; i++) {
+        for (let i = 0; i < 1; i++) {
             let x0 = Utils.randomInt(50, canvas.clientWidth - 50);
-            let y0 = Utils.randomInt(50, canvas.clientHeight - 50);
+            let y0 = Utils.randomInt(50, 150);
             let x1 = x0 + Utils.randomInt(-0, 50);
             let y1 = y0 + Utils.randomInt(-0, 50);
             let w = Utils.randomInt(1, 25);
             let m = Utils.randomInt(1, 100);
 
-            var obj = new Ball(this, m, w, new Vector(x0, y0));
+            var ball = new Ball(this, m, w, new Vector(x0, y0));
 
-            var fixPol2 = new Fixture(obj, 1);
-            obj.addFixture(fixPol2);
+            var fixPol2 = new Fixture(ball, 1);
+            ball.addFixture(fixPol2);
 
-            this.addWorldObj('main', obj);
+            this.addWorldObj('main', ball);
         }
 
         this.addWalls();
+
+        let ground = new Ground(this, 0, new Vector(0, 400), new Vector(canvas.clientWidth, 400));  // Horizontal ground
+        var fixGround = new Fixture(ground, 1);
+        ground.addFixture(fixGround);
+
+        this.addWorldObj('main', ground);
     }
 
     addWalls() {
@@ -96,7 +101,6 @@ class GameSimpleBalls extends Scene {
         const thatRocket = this;
     
         document.addEventListener('mousedown', function (e) {
-            // Ensure mousePos is a Vector
             eventshelper.mousePos = new Vector(e.clientX, e.clientY);
             thatRocket.selectObjectFromMousePos(eventshelper.mousePos);
         }, false);
@@ -107,5 +111,4 @@ class GameSimpleBalls extends Scene {
             }
         });
     }
-    
 }
