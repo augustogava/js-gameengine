@@ -11,7 +11,7 @@ class Ground extends BodyDef {
         this.setBodyType('static');
 
         this.shape = new Line(start.x, start.y, end.x, end.y);
-        this.angle = end.subtract( start ).headingRadian();
+        this.angle = Math.atan2(end.y - start.y, end.x - start.x);
 
         this.bounce = 0;
         this.friction = 0.9;
@@ -41,7 +41,8 @@ class Ground extends BodyDef {
             return false;
         }
         let amt = (pos.x - this.start.x) / (this.end.x - this.start.x);
-        return (pos.y + r) - MathHelper.lerp(this.start.y, this.end.y, amt);
+        let groundY = MathHelper.lerp(this.start.y, this.end.y, amt);
+        return (pos.y + r) - groundY;
     }
 
     intersects(otherShape) {

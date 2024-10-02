@@ -28,15 +28,6 @@ class Vector {
         return new Vector(this.x / length, this.y / length);
     }
 
-    // normalize() {
-    //     return this.setMag(1);  // This now uses the setMag function
-    // }
-
-    // normalize() {
-    //     let length = this.getLength();
-    //     return new Vector(this.x / length, this.y / length);
-    // }
-
     dot(v) {
         return this.x * v.x + this.y * v.y;
     }
@@ -77,13 +68,13 @@ class Vector {
         return Math.atan2(this.y, this.x);
     }
 
+    headingRadian() {
+        return Math.atan2(this.y, this.x);
+    }
+
     heading() {
         var angle = this.getAngle();
         return new Vector(Math.cos(angle), Math.sin(angle));
-    }
-
-    headingRadiasn() {
-        return Math.atan2(this.y, this.x);
     }
 
     getHeading(other) {
@@ -179,13 +170,6 @@ class Vector {
         return new Vector(this.x, this.y);
     }
 
-    // distance(p1) {
-    //     var dx = this.x - p1.x,
-    //         dy = this.y - p1.y;
-
-    //     return Math.sqrt(dx * dx + dy * dy);
-    // }
-
     distance(p1) {
         if (!p1 || !(p1 instanceof Vector)) {
             console.error("Invalid parameter passed to distance method.");
@@ -201,7 +185,6 @@ class Vector {
         return Math.atan2(other.y - this.y, other.x - this.x);
     }
 
-
     negate() {
         this.x = -this.x;
         this.y = -this.y;
@@ -209,16 +192,16 @@ class Vector {
         return this;
     }
 
-    unit(){
-        if(this.mag() === 0){
-            return new Vector(0,0);
+    unit() {
+        if (this.mag() === 0) {
+            return new Vector(0, 0);
         } else {
-            return new Vector(this.x/this.mag(), this.y/this.mag());
+            return new Vector(this.x / this.mag(), this.y / this.mag());
         }
     }
 
-    mag(){
-        return Math.sqrt(this.x**2 + this.y**2);
+    mag() {
+        return Math.sqrt(this.x ** 2 + this.y ** 2);
     }
 
     setMag(mag) {
@@ -233,11 +216,11 @@ class Vector {
         return this;
     }
 
-    mult(n){
-        return new Vector(this.x*n, this.y*n);
+    mult(n) {
+        return new Vector(this.x * n, this.y * n);
     }
 
-    drawVec(start_x, start_y, n, color){
+    drawVec(start_x, start_y, n, color) {
         ctx.beginPath();
         ctx.moveTo(start_x, start_y);
         ctx.lineTo(start_x + this.x * n, start_y + this.y * n);
@@ -246,7 +229,7 @@ class Vector {
         ctx.closePath();
     }
 
-    drawVec(start_x, start_y, n, color, arrowsize = 4) {
+    drawVec2(start_x, start_y, n, color, arrowsize = 4) {
         start_x = start_x == undefined ? this.x : start_x;
         start_y = start_y == undefined ? this.y : start_y;
         ctx.beginPath();
@@ -270,10 +253,4 @@ class Vector {
         ctx.stroke();
         ctx.closePath();
     }
-
-    lerp(a, b, t) {
-        return a + (b - a) * t;
-    }
-
-
 }

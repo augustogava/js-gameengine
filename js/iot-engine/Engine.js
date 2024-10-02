@@ -16,9 +16,9 @@ class Engine {
     mouseDownInitPosition = new Vector(0, 0);
 
     constructor(gameObjectType) {
-        Globals.setBoundaries(false);
+        Globals.setBoundaries(true);
         Globals.setCollisions(true);
-        Globals.setDebug(true);
+        Globals.setDebug(false);
 
         this.setScreen();
         this.objs = [];
@@ -27,10 +27,14 @@ class Engine {
         this.debugger = new Debugger();
         this.gameObjectType = gameObjectType;
 
-        this.interactions = new Interactions(canvas); // New interactions instance
+        this.interactions = new Interactions(canvas);
 
         this.gameLoop = this.gameLoop.bind(this);
         eventshelper.mousePos = new Vector(0, 0);
+
+        this.targetFPS = 60;
+        this.frameInterval = 1000 / this.targetFPS;
+        this.accumulatedTime = 0;
     }
 
     init() {
@@ -39,23 +43,33 @@ class Engine {
 
         this.gameObjectType.init();
 
-        this.gameLoop(); 
+        this.gameLoop();
     }
 
     startLoop() {
         requestAnimationFrame(this.gameLoop);
     }
 
-    gameLoop(timestamp = 1) {
+    gameLoop(timestamp = 0) {
         if (!this.lastTime) this.lastTime = timestamp;
-        const deltaTime = (timestamp - this.lastTime) * 0.001;
 
-        this.update(deltaTime);
-        this.draw();
+        const deltaTime = timestamp - this.lastTime;
         this.lastTime = timestamp;
 
-        if (this.paused) {
+        this.accumulatedTime += deltaTime;
+
+        while (this.accumulatedTime >= this.frameInterval) {
+            const deltaTimeSeconds = this.frameInterval * 0.001;
+
+            this.update(deltaTimeSeconds);
+            this.accumulatedTime -= this.frameInterval;
+
             this.calculateFPS();
+        }
+
+        this.draw();
+
+        if (this.paused) {
             if (this.resetTime) {
                 this.lastTime = timestamp;
             }
@@ -76,7 +90,7 @@ class Engine {
             this.handleUserInteraction(interactionState);
         }
 
-        this.interactions.resetLoop(); // Reset interaction state
+        this.interactions.resetLoop();
     }
 
     handleUserInteraction(interactionState) {
@@ -90,9 +104,7 @@ class Engine {
 
         this.addText(`${this.fps}`, canvas.width - 85, 20, 14, "black");
         for (let objIntte of this.objs) {
-            //objIntte.draw();
             if (Globals.isDebug()) {
-                // objIntte.debug();
             }
         }
     }

@@ -11,18 +11,15 @@ class Physics {
     }
 
     applyFriction(mu) {
-        let diff = canvas.height - (this.obj.shape.position.y + this.obj.shape.radius);
-        if (diff < 1) {
-            let friction = this.obj.velocity.clone();
-            friction = friction.normalize();
-            friction= friction.multiplyBy(-1);
-
-            let normal = this.mass;
-            friction.setLength(mu * normal);
-
-            this.applyForce(friction);
+        if (this.obj.isOnGround && this.obj.ground) {
+            let normal = new Vector(Math.sin(this.obj.ground.angle), -Math.cos(this.obj.ground.angle));
+            let frictionDirection = this.obj.velocity.clone().normalize().multiplyBy(-1);
+            let frictionMagnitude = mu * this.mass * 0.55;
+            let frictionForce = frictionDirection.multiplyBy(frictionMagnitude);
+            this.applyForce(frictionForce);
         }
     }
+
 }
 
 
@@ -33,9 +30,29 @@ class PhysicsEngine {
         this.forces = [];
         this.enabled = true;
     }
+    status() {
+        return this.enabled;
+    }
+
+    toogleStatus() {
+        this.enabled = !this.enabled;
+    }
+
 
     addForce(name, force) {
         this.forcesHash.set(name, new Force(force));
+    }
+
+    getForce(name) {
+        if (!this.woforcesHashlds) {
+            return [];
+        }
+
+        if (!this.forcesHash.get(name)) {
+            return [];
+        }
+
+        return this.forcesHash.get(name);
     }
 
     getForces() {
@@ -65,3 +82,15 @@ class Force {
         return this;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+

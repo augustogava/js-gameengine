@@ -60,9 +60,10 @@ class BodyDef {
         ctx.fillStyle = this.color;
 
         this.density = 1;
-        this.friction = 1;
-        this.elasticity = 1;
-
+        this.bounce = 0;
+        this.friction = 0.2;
+        this.elasticity = 0.5;
+        this.mu = 0.1;
         this.restitution = 1;
 
         this.velocity = new Vector(0, 0);
@@ -84,6 +85,9 @@ class BodyDef {
         this.inv_inertia = 0;
         this.angVel = 0;
 
+        this.isOnGround = false;
+        this.ground = null;
+
         if (speed)
             this.velocity.setLength(speed);
 
@@ -98,27 +102,27 @@ class BodyDef {
     }
 
     step(d) {
-        this.verifyActions();
 
 
         if (Utils.existsMethod(this.update)) {
             this.update(d)
         } else if (this.shape && Utils.existsMethod(this.shape.update)) {
-            this.shape.update(d)
+            // this.shape.update(d)
         }
 
         if (typeof this.updatecamerabox === "function") {
             this.updatecamerabox(d);
         }
 
-        if (Globals.isAttraction()) {
-            obj.attract();
-        }
+        // if (Globals.isAttraction()) {
+        //     obj.attract();
+        // }
 
         if (Globals.getBoundaries()) {
             this.updateConstraintsStep();
         }
 
+        this.verifyActions();
     }
 
     drawStep() {

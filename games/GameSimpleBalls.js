@@ -1,10 +1,6 @@
 class GameSimpleBalls extends Scene {
     constructor() {
         super(GameSimpleBalls);
-        Globals.setInputInteractions(true);
-        Globals.setBoundaries(true);
-        Globals.setDebug(true);
-
         this.selectedBody = null;
 
         this.createWorld('main');
@@ -19,13 +15,13 @@ class GameSimpleBalls extends Scene {
     }
 
     addObjects() {
-        for (let i = 0; i < 1; i++) {
-            let x0 = Utils.randomInt(50, canvas.clientWidth - 50);
-            let y0 = Utils.randomInt(50, 150);
+        for (let i = 0; i < 100; i++) {
+            let x0 = Utils.randomInt(25, canvas.clientWidth - 50);
+            let y0 = Utils.randomInt(15, 250);
             let x1 = x0 + Utils.randomInt(-0, 50);
             let y1 = y0 + Utils.randomInt(-0, 50);
-            let w = Utils.randomInt(1, 25);
-            let m = Utils.randomInt(1, 100);
+            let w = Utils.randomInt(1, 15);
+            let m = w/100 + Utils.randomInt(1, 5);
 
             var ball = new Ball(this, m, w, new Vector(x0, y0));
 
@@ -37,7 +33,7 @@ class GameSimpleBalls extends Scene {
 
         this.addWalls();
 
-        let ground = new Ground(this, 0, new Vector(0, 400), new Vector(canvas.clientWidth, 400));  // Horizontal ground
+        let ground = new Ground(this, 0, new Vector(200, canvas.clientHeight/3), new Vector(canvas.clientWidth-200, canvas.clientHeight-300));
         var fixGround = new Fixture(ground, 1);
         ground.addFixture(fixGround);
 
