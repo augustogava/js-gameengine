@@ -100,7 +100,6 @@ class Interactions {
         return this.mouseDown;
     }
 
-    // Re-add these methods to ensure all functionalities are retained
     mouseClickDown() {
         return this.mousePressed;
     }
@@ -124,7 +123,7 @@ class Interactions {
 
     resetLoop() {
         this.lastMousePos = { ...this.mousePos };
-        this.mousePressed = false; // Ensure mousePressed resets each loop
+        this.mousePressed = false;
         this.scrollDelta = 0; 
     }
 }

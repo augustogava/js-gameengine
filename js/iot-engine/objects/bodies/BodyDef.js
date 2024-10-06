@@ -1,46 +1,10 @@
-const bodyType = new HashTable();
-bodyType.set('static', {mass: 0, velocity: 0, moved: 0});
-bodyType.set('dynamic', {mass: 0, velocity: 1, moved: 1});
-bodyType.set('kinematic', {mass: 1, velocity: 1, moved: 1});
-
-class BodyDefType {
-    constructor(bodyTypeP) {
-        this.bodyType = bodyType.get(bodyTypeP);
-    }
-}
-
-// FlatVector position;
-// FlatVector linearVelocity;
-// float angle;
-// float angularVelocity;
-// FlatVector force;
-
-// public readonly ShapeType ShapeType;
-// public readonly float Density;
-// public readonly float Mass;
-// public readonly float InvMass;
-// public readonly float Restitution;
-// public readonly float Area;
-// public readonly float Inertia;
-// public readonly float InvInertia;
-// public readonly bool IsStatic;
-// public readonly float Radius;
-// public readonly float Width;
-// public readonly float Height;
-
-// readonly FlatVector[] vertices;
-// FlatVector[] transformedVertices;
-// FlatAABB aabb;
-
-// bool transformUpdateRequired;
-// bool aabbUpdateRequired;
-
 class BodyDef {
     constructor(instance, mass, position, speed, direction) {
 
         this.id = Utils.randomIntFromInterval(1, 5000);
         this.currentTime = Date.now();
         this.physics = new Physics(this);
+        this.setBodyType('static');
 
         this.mass = mass ? mass : 1;
         this.invMass = (this.mass === 0) ? 0 : (1 / this.mass);
@@ -102,8 +66,6 @@ class BodyDef {
     }
 
     step(d) {
-
-
         if (Utils.existsMethod(this.update)) {
             this.update(d)
         } else if (this.shape && Utils.existsMethod(this.shape.update)) {
@@ -293,6 +255,9 @@ class BodyDef {
             }
         }
     }
+    predictNextPosition(deltaTime) {
+        return this.shape.position.add(this.velocity.multiply(deltaTime));
+    }
 
     addCamera() {
         this.camerabox = Camera.createCameraBox({
@@ -300,5 +265,9 @@ class BodyDef {
             width: 600,
             height: 300
         });
+    }
+
+    intersects(otherShape) {
+        return false;
     }
 }

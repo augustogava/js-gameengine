@@ -1,19 +1,13 @@
 class Engine {
     fpsHelper = 0;
     fps = 60;
-
     startTime;
-    followShape = false;
-    selectedPolygon = undefined;
     paused = true;
-    lastShapeUsed = "CIRCLE";
     resetTime = false;
-    scalar = 2 * Utils.randomBoolean1orMinus1();
 
-    physicsFriction = 0.99;
+    collisionGrid = null;
     ctxClearScreen = true;
     mousePos = new Vector(0, 0);
-    mouseDownInitPosition = new Vector(0, 0);
 
     constructor(gameObjectType) {
         Globals.setBoundaries(true);

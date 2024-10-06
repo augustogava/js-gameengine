@@ -60,9 +60,10 @@ class Vector {
 
     setAngle(angle) {
         var length = this.getLength();
-        this.x = Math.cos(angle) * 1;
-        this.y = Math.sin(angle) * 1;
+        this.x = Math.cos(angle) * length;
+        this.y = Math.sin(angle) * length;
     }
+
 
     getAngle() {
         return Math.atan2(this.y, this.x);
@@ -82,9 +83,9 @@ class Vector {
     }
 
     setHeading(angle) {
-        var angle = this.getAngle();
-        this.x = Math.cos(angle);
-        this.y = Math.sin(angle);
+        let length = this.getLength();
+        this.x = Math.cos(angle) * length;
+        this.y = Math.sin(angle) * length;
     }
 
     setLength(length) {

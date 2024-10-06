@@ -23,11 +23,16 @@ class MapGame {
   constructor(rocket) {
     this.rocket = rocket;
     this.load = false;
+    this.gridEnabled = Globals.isGridVisible();
+    this.grid = new Grid(canvas.width, canvas.height, Globals.getGridSize());
+  }
+
+  toggleGrid() {
+    this.gridEnabled = !this.gridEnabled;
+    this.grid.toggleVisibility();
   }
 
   update(deltaTime) {
-    // this.fTheta += 1.0 * deltaTime;
-
   }
 
   draw() {
@@ -35,5 +40,9 @@ class MapGame {
     background.position.x += camera.position.getX();
 
     background.draw();
+
+    if (this.gridEnabled) {
+      this.grid.draw(ctx);
+    }
   }
 }

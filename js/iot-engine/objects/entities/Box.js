@@ -1,15 +1,15 @@
 class Box extends BodyDef {
 	constructor(rocketFake, x1, y1, x2, y2, mass, width, angle) {
-		super(Box, mass, new Vector(x1, y1));
+		super();
 		this.rocketFake = rocketFake;
 		this.physics = new Physics(this);
 
 		this.bounce = 0;
-		this.friction = .7;
+		this.friction = 0.7;
 
 		this.setBodyType('dynamic');
 
-		this.shape = new Rectangle(x1, y1, x2, y2, width, angle)
+		this.shape = new Rectangle(x1, y1, x2, y2, width, angle);
 
 		this.vertices = this.shape.vertices;
 		this.edges = this.shape.edges;
@@ -17,12 +17,9 @@ class Box extends BodyDef {
 
 		this.position = this.shape.getPosition();
 
-		this.inertia = this.mass* (this.shape.width ** 2 + this.shape.length ** 2) / 12;
-		if (this.mass=== 0) {
-			this.inv_inertia = 0;
-		} else {
-			this.inv_inertia = 1 / this.inertia;
-		} 
+		this.mass = mass;
+		this.inertia = this.mass * (this.shape.width ** 2 + this.shape.length ** 2) / 12;
+		this.inv_inertia = this.mass === 0 ? 0 : 1 / this.inertia;
 	}
 
 	draw() { this.shape.draw();	}
@@ -30,49 +27,40 @@ class Box extends BodyDef {
 	update(d) {
 		if (this.isDragging()) {
 			let delta = eventshelper.mousepos.subtract(this.getCenter());
+			this.position = delta;
 			this.shape.position = delta;
-
 			this.shape.getVertices();
-
-			this.position = this.shape.getPosition();
 		} else {
 			this.shape.update(d);
-
 			this.position = this.shape.getPosition();
 		}
 
-		this.shape.acceleration = new Vector(0,0);
+		this.shape.acceleration = new Vector(0, 0);
 	}
 
-	userAction(key) {	
+
+	userAction(key) {
 		if (eventshelper.keycode) {
-
-            if (eventshelper.keycode === 'ArrowLeft') {
-                this.shape.acceleration.addTo(new Vector(-1, 0));
-            }
-
-            if (eventshelper.keycode === 'ArrowRight') {
-                this.shape.acceleration.addTo(new Vector(1, 0));
-            }
-
-            if (eventshelper.keycode === 'ArrowUp') {
-                this.shape.acceleration.addTo(new Vector(0, -1));
-            }
-
-            if (eventshelper.keycode === 'ArrowDown') {
-                this.shape.acceleration.addTo(new Vector(0, 1));
-            }
+			if (eventshelper.keycode === 'ArrowLeft') {
+				this.shape.acceleration.addTo(new Vector(-1, 0));
+			}
+			if (eventshelper.keycode === 'ArrowRight') {
+				this.shape.acceleration.addTo(new Vector(1, 0));
+			}
+			if (eventshelper.keycode === 'ArrowUp') {
+				this.shape.acceleration.addTo(new Vector(0, -1));
+			}
+			if (eventshelper.keycode === 'ArrowDown') {
+				this.shape.acceleration.addTo(new Vector(0, 1));
+			}
 		}
 	}
 
 	getInputFieldsConfig() {
 		return {
 			'Rectangle': [
-				// { id: 'speed', label: 'Speed', type: 'number', value: this.getSpeed() },
 				{ id: 'color', label: 'Color', type: 'color', value: this.color },
-				{ id: 'width', label: 'Radius', type: 'number', value: this.radius },
-				// { id: 'mass', label: 'Mass', type: 'number', value: this.mass },
-				// { id: 'width', label: 'Width', type: 'number', value: rocketWidth },
+				{ id: 'width', label: 'Width', type: 'number', value: this.shape.width },
 				{ id: 'positionX', label: 'Position X', type: 'number', value: this.position.getX() },
 				{ id: 'positionY', label: 'Position Y', type: 'number', value: this.position.getY() }
 			]
@@ -80,12 +68,19 @@ class Box extends BodyDef {
 	}
 
 	updateFieldUserInstance(property, value) {
-		console.log(property)
+		if (property === 'color') {
+			this.color = value;
+			ctx.fillStyle = value;
+		} else if (property === 'width') {
+			this.shape.width = value;
+		} else if (property === 'positionX') {
+			this.position.setX(value);
+			this.shape.position.setX(value);
+		} else if (property === 'positionY') {
+			this.position.setY(value);
+			this.shape.position.setY(value);
+		}
 	}
-
-
-
-
 
 
 
@@ -102,21 +97,18 @@ class Box extends BodyDef {
 	resolveCollision(otherShape) {
 		if (otherShape.shape instanceof Circle) {
 			return false;
-			// return this.shape.resolveCollisionWithCircle(otherShape);
 		} else if (otherShape.shape instanceof PolygonShape) {
 			return 1;
 		}
 	}
 
 	collidesWithCircle(circle) {
-		// Check if any vertex of the polygon is inside the circle
 		for (let vertex of this.vertices) {
 			if (circle.containsPoint(vertex.position)) {
 				return true;
 			}
 		}
 
-		// Check if the circle's center is close enough to any edge of the polygon
 		for (let edge of this.edges) {
 			if (circle.distanceToLineSegment(edge.p0.position, edge.p1.position) < circle.radius) {
 				return true;

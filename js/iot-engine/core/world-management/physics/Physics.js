@@ -29,6 +29,8 @@ class PhysicsEngine {
         this.forcesHash = new HashTable();
         this.forces = [];
         this.enabled = true;
+
+        this.collisionGrid = new CollisionGrid(canvas.width, canvas.height, 10);
     }
     status() {
         return this.enabled;
@@ -56,7 +58,18 @@ class PhysicsEngine {
     }
 
     getForces() {
-        return this.forcesHash.getAllObjcts();
+        return this.forcesHash.getAllObjects();
+    }
+
+    applyForcesV2(body) {
+        const forces = this.getForces();
+        for (let force of forces) {
+            if (force.type === 1) {
+                body.applyForce(force.value);
+            } else if (force.type === 2) {
+                body.velocity = body.velocity.multiplyBy(force.value);
+            }
+        }
     }
 
     applyForces(body) {
