@@ -1,4 +1,4 @@
-class MainGame {
+class OldEngine_perlin {
     frameCount = 0;
     fps = 200;
     startTime;

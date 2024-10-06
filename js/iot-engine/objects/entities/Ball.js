@@ -1,12 +1,11 @@
 class Ball extends BodyDef {
     constructor(rocketFake, mass, radius, position) {
         super(Ball, mass, position);
-        this.rocketFake = rocketFake;
-        this.physics = new Physics(this);
-
-        this.color = "black";
         this.setBodyType('dynamic');
 
+        this.rocketFake = rocketFake;
+        this.physics = new Physics(this);
+        this.color = "black";
         this.shape = new Circle(new Vector(position.x, position.y), radius);
 
         this.bounce = 0;
@@ -175,31 +174,33 @@ class Ball extends BodyDef {
     updateConstraints() {
         if ((this.shape.position.y + this.shape.radius) > canvas.height) {
             this.shape.position.y = canvas.height - this.shape.radius;
-
             this.velocity.y *= -this.elasticity;
-
             this.velocity.x *= (1 - this.friction);
         }
 
         if ((this.shape.position.y - this.shape.radius) < 0) {
             this.shape.position.y = this.shape.radius;
-
             this.velocity.y *= -this.elasticity;
         }
 
         if ((this.shape.position.x + this.shape.radius) > canvas.width) {
             this.shape.position.x = canvas.width - this.shape.radius;
-
             this.velocity.x *= -this.elasticity;
         }
 
         if ((this.shape.position.x - this.shape.radius) < 0) {
             this.shape.position.x = this.shape.radius;
-
             this.velocity.x *= -this.elasticity;
         }
-    }
 
+        if (this.ground) {
+            let belowDistance = this.ground.below(this.shape.position, this.shape.radius);
+            if (belowDistance > 0) {
+                this.shape.position.y -= belowDistance;
+                this.velocity.y *= -this.elasticity;
+            }
+        }
+    }
 
     intersects(otherShape) {
         if (otherShape.shape instanceof Circle) {
@@ -227,7 +228,7 @@ class Ball extends BodyDef {
         if (otherShape.shape instanceof Circle) {
             return this.resolveCollisionWithCircle(otherShape);
         } else if (otherShape instanceof Ground) {
-            return this.resolveCollisionWithGround(otherShape);
+            return this.resolveCollisionWithGroundV2(otherShape);
         }
     }
 
@@ -259,6 +260,31 @@ class Ball extends BodyDef {
 
             this.velocity = this.velocity.add(impulse.multiplyBy(this.inv_m));
             otherBall.velocity = otherBall.velocity.subtract(impulse.multiplyBy(otherBall.inv_m));
+        }
+    }
+
+    resolveCollisionWithGroundV2(ground) {
+        let belowDistance = ground.below(this.shape.position, this.shape.radius);
+        if (belowDistance > 0) {
+            this.isOnGround = true;
+            this.ground = ground;
+
+            this.shape.position.y -= belowDistance;
+
+            let normal = new Vector(Math.sin(ground.angle), -Math.cos(ground.angle));
+            let tangent = new Vector(Math.cos(ground.angle), Math.sin(ground.angle));
+
+            let v = this.velocity;
+            let vn = normal.multiplyBy(v.dot(normal));
+            let vt = v.subtract(vn);
+
+            let vn_new = vn.multiplyBy(-this.elasticity);
+            let vt_new = vt.multiplyBy(1 - this.friction);
+
+            this.velocity = vn_new.add(vt_new);
+
+            let acc_normal = normal.multiplyBy(this.acceleration.dot(normal));
+            this.acceleration = this.acceleration.subtract(acc_normal);
         }
     }
 

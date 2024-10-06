@@ -1,6 +1,9 @@
 
 #TODO
-
+##
+   Move interecations to a more generic
+      Like **selectObjectFromMousePos**
+   Move the
 ##Main
  - The main js engine, is crap, from an old version, need total rebuild.
    -  Need it ?

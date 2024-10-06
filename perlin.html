@@ -56,10 +56,10 @@
         }
     </style>
 
-    <script src="js/iot-engine/interactions/interactionSettings.js"></script>
-    <script src="js/iot-engine/interactions/Interections.js"></script>
+    <script src="js/iot-engine/core/interactions/interactionSettings.js"></script>
+    <script src="js/iot-engine/core/interactions/Interections.js"></script>
 
-    <script src="js/iot-engine/world-management/Fixture.js"></script>
+    <script src="js/iot-engine/core/world-management/physics/helpers/Fixture.js"></script>
 
     <script src="js/iot-engine/helpers/Globals.js"></script>
     <script src="js/iot-engine/helpers/Utils.js"></script>
@@ -69,14 +69,14 @@
     <script src="js/iot-engine/helpers/MathHelper.js"></script>
     <script src="js/iot-engine/helpers/Debugger.js"></script>
 
-    <script src="js/iot-engine/effects/Effects.js"></script>
-    <script src="js/iot-engine/physics/Matrix.js"></script>
-    <script src="js/iot-engine/physics/Physics.js"></script>
-    <script src="js/iot-engine/physics/PhysicsComplex.js"></script>
+    <script src="js/iot-engine/visual-effects/Effects.js"></script>
+    <script src="js/iot-engine/core/world-management/physics/Matrix.js"></script>
+    <script src="js/iot-engine/core/world-management/physics/Physics.js"></script>
+    <script src="js/iot-engine/core/world-management/physics/PhysicsComplex.js"></script>
 
     <script src="js/ObjectMain.js"></script>
 
-     <script src="js/perlinNoise.js"></script>
+     <script src="games/perlinNoise.js"></script>
      <script src=".resources/older_engine/MainGame.js"></script>
 </head>
 
@@ -91,7 +91,7 @@
 
         let game = undefined;
         window.onload = function () {
-            game = new MainGame(new PerlinNoise());
+            game = new OldEngine_perlin(new PerlinNoise());
             game.init();
         };
     </script>

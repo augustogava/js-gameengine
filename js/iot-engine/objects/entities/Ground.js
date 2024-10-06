@@ -1,6 +1,8 @@
 class Ground extends BodyDef {
     constructor(rocketFake, mass, start, end) {
         super(Ground, mass, start);
+        this.setBodyType(`static`);
+
         this.rocketFake = rocketFake;
         this.physics = new Physics(this);
 
@@ -8,7 +10,6 @@ class Ground extends BodyDef {
         this.end = end;
 
         this.color = "black";
-        this.setBodyType('static');
 
         this.shape = new Line(start.x, start.y, end.x, end.y);
         this.angle = Math.atan2(end.y - start.y, end.x - start.x);
@@ -42,8 +43,10 @@ class Ground extends BodyDef {
         }
         let amt = (pos.x - this.start.x) / (this.end.x - this.start.x);
         let groundY = MathHelper.lerp(this.start.y, this.end.y, amt);
-        return (pos.y + r) - groundY;
+
+        return groundY - (pos.y + r);
     }
+
 
     intersects(otherShape) {
         return false;

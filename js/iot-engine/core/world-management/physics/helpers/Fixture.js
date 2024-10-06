@@ -1,5 +1,5 @@
- class Fixture {
-    constructor(obj = null, friction = 1){
+class Fixture {
+    constructor(obj = null, friction = 1) {
         this.h = 1;
         this.obj = obj;
 
@@ -14,7 +14,9 @@
     }
 
     collidesWith(fixture) {
-        return this.obj.intersects(fixture.obj);
+        if (this.obj && Utils.existsMethod(this.obj.intersects)) {
+            return this.obj.intersects(fixture.obj);
+        }
     }
 
     solveCollision(fixture) {
